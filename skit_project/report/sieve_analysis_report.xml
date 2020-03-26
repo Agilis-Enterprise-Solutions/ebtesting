@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	     <!-- Paper Format for Sieve Analysis of Soil Aggregate -->
+		<record model="report.paperformat" id="report_sieve_analysis">
+			<field name="name">sieve analysis</field>
+			<field name="model">skit.sieve.analysis</field>
+			<field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">270</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">130</field>
+			<field name="report_name">skit_project.report_sieve_analysis_document</field>
+		</record>
+	    <!-- Sieve Analysis of Soil Aggregate -->
+	    <report 
+			model="skit.sieve.analysis" 
+			id="action_report_sieve_analysis_copy" 
+			name="skit_project.report_sieve_analysis_document_advance" 
+			file="skit_project.report_sieve_analysis_document_advance" 
+			report_type="qweb-pdf" paperformat="skit_project.report_sieve_analysis"  string="Print Advance Copy" />
+	    
+	    
+		<report 
+			model="skit.sieve.analysis" 
+			id="action_report_sieve_analysis" 
+			name="skit_project.report_sieve_analysis_document" 
+			file="skit_project.report_sieve_analysis_document" 
+			report_type="qweb-pdf" paperformat="skit_project.report_sieve_analysis"  string="Print Final Copy" />
+			
+	</data>
+</odoo>

@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="report_soil_consistency_document">
+			<t t-call="web.html_container">
+				<t t-call="web.html_container">
+					<t t-call="web.internal_layout">
+						<div class="page" style="font-size:20px !important;">
+							<link rel="stylesheet" type="text/css" href="/web/static/lib/nvd3/nv.d3.css"/>
+	             			<script src="https://d3js.org/d3.v3.min.js"></script>
+								<t t-if="docs">
+		 							<td class="header">
+								 	 <h5 class = "text-right" >Date: <t t-esc="docs.consistency_test_date" /></h5>
+								 	 <h5 class = "text-right" >Lab No. : <t t-esc="docs.name" /></h5>
+								 	 <h4 class='text-center'> REPORT FOR SOIL CONSISTENCY TEST </h4>
+									 <div width="100%">
+			 							<div width= "100%">
+			                            	<table class="float-left " style="width:50% !important;">
+			                            		<thead>
+			                             			<tr>
+						                            	<td><strong>Project :</strong></td>
+						                            	<td><strong t-esc="docs.project_id.name" /></td>
+						                            </tr>
+						                            <tr>
+							                            <td><span>Location: </span> </td>
+							                            <td><span t-esc="docs.location_id.name" /></td>
+						                           	</tr>
+						                           	<tr>
+						                            	<td><span>Contractor:</span></td>
+						                             	<td><span t-esc="docs.contractor.name" /></td>
+						                             </tr>
+						                             <tr>
+							                         	<td><span>Kind of Material:</span></td>
+							                         	<td><span t-esc="docs.kind_of_material.name" /></td>
+							                         </tr>
+						                             <tr>
+						                             	<td>Source :</td>
+						                             	<td><span t-esc="docs.original_source"/></td>
+						                             </tr>
+					                             </thead>
+		                                   </table>
+					                       <table class="float-left " style="width:50% !important;">
+					                            <thead>
+						                        	<tr>
+					                                	<td><span>Sampled ID: </span></td>
+					                                	<td><span t-esc="docs.sample_identify" /></td>
+				                                	</tr>
+						                            <tr>
+						                             	<td><span>Sampled By: </span></td>
+						                               	<td><span t-esc="docs.sampled_by.name" /></td>
+					                                </tr>
+						                           	<tr>
+						                                <td><span>Submitted_by:</span></td>
+						                                <td><span t-esc="docs.submitted_by.name" /></td>
+						                            </tr>
+						                            <tr>
+						                               <td>Date Submitted:</td>
+						                               <td><span t-esc="docs.date_submit"/></td>
+					                               </tr>
+						                           <tr>
+						                               <td><span>Tested_by:</span></td>
+						                               <td><span t-esc="docs.tested_by.name" /></td>
+						                           </tr>
+					                           </thead>
+				                           </table>
+               				           </div>
+           				           </div>
+               					   <table class="table table-condensed">
+               					   		<tbody>
+               	  							<tr >
+												<th class="text-center">LIQUID LIMIT - PLASTIC LIMIT - PLASTICITY INDEX</th>
+												<th></th>
+											</tr>
+										</tbody>
+										 	<tr>
+												<th class= 'text-center'>LIQUID LIMIT </th>
+												<th>PLASTIC LIMIT</th>
+										 	</tr>
+										</table> 
+										<table class="table table-condensed">
+											<tr class="highlight overlap">
+										  		<td class="text-left">Trial No.</td>
+													<t t-foreach="docs_line" t-as="order">
+														<td>
+															<span>
+																<t t-esc="order['trial_no']" />
+															</span>
+														</td>
+										        	</t>
+									        	<td></td>
+									        	<td></td>
+										        	<t t-foreach="liquid" t-as="order">
+														<td>
+															<span>
+																<t t-esc="order['trial_no']" />
+															</span>
+														</td>
+										        	</t>
+									  		  </tr>
+											  <tr class="highlight overlap">
+											  		<td class="text-left">Dish No.</td>
+														<t t-foreach="docs_line" t-as="order">
+															<td>
+																<span>
+																	<t t-esc="order['dish_no']" />
+																</span>
+															</td>
+											        	</t>
+											        <td></td>
+											        <td></td>
+											        	<t t-foreach="liquid" t-as="order">
+															<td>
+																<span>
+																	<t t-esc="order['dish_no']" />
+																</span>
+															</td>
+											        	</t>
+									  			  </tr>
+												  <tr class="highlight overlap">
+												  		<td class="text-left">No. of Blows Required</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<!-- <t t-esc="order['determination_no']" /> -->
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['no_of_blow_req']" />
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												  <tr class="highlight overlap">
+												  		<td class="text-left">No. of Blows</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<!-- <t t-esc="order['determination_no']" /> -->
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['no_of_blow']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">1. Weight of dish + wet soil</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_wetsoil']" />
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_wetsoil']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">2. Weight of dish + dry soil</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_drysoil']" />
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_drysoil']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">3. Weight of dish</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish']" />
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">4. Weight of water (1-2)</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_water']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_water']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">5. Weight of dry soil</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_drysoil']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_drysoil']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">6. % Moisture (4/5 x 100)</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['moisture_content']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['moisture_content']" t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">7. Average Plastic Limit</td>
+												  			<t>
+																<td>
+																	<t></t>
+																</td>
+																<td></td>
+																<td>
+																	<span>
+																		<t t-esc="docs.avg_plastic_limit"  t-options='{"widget": "float", "precision": 2}' />
+																	</span>
+															    </td>
+																<td> <t></t></td>
+																<td><t></t></td>
+																<td> <t></t></td>
+																<td><t></t></td>
+												            </t>
+											    	</tr>
+						               </table>
+              						   	<hr></hr>
+						                <div  style="width:100%; display:inline-block;float:left;" >
+				                         	<t t-if="len(graph)>=1">
+					                            <table class="table float-right" style="width:100%!important; display:inline-block;">
+					                             	<div id="progress" style="display:none"><t t-esc="graph" /></div>
+					                             	<div  class="svg-wrapper" id="line_graph" style="width:100%;height:500px;display: inline-block;border: 1px solid;margin-top: 1%;" > 
+		                    	                		<h5 style="text-align: center;margin-top: 2%;margin-bottom: 5%;"></h5>
+		                    	                 		<svg id="line_graph_svg" width="800" height="400"/>
+		                                          	</div>
+					                          	</table> 
+				                            </t>
+					                         <t t-else="" >
+				                          		<table class="table float-right" style="width:100%!important; display:inline-block;">
+				                           			<div  class="svg-wrapper" id="line_graph" style="width:100%;height:500px;display: inline-block;border: 1px solid;margin-top: 1%;" >
+				                           				<h3 style="text-align: center; margin-top:18%; "> No Data Available </h3> 
+				                           			</div>
+				                           		</table>
+				                             </t>
+					                     </div>
+				                         <div width="100%">
+											  <table class="float-left "  style="width:50% !important;border: 1px solid black;"> 
+					                          		<tr style= "border: 1px solid black;">
+						                               <td><h5><strong><br/>Tested By:</strong></h5> <br/>
+						                               		<span style="margin-left:15%;"><t t-esc="docs.tested_by.name" /><br/></span>
+						                               </td>
+						                            </tr>
+						                            <tr>
+						                               <td> <h5><strong><br/>Checked By: </strong></h5> <br/> 
+						                               		<span style="margin-left:15%;"><t t-esc="docs.checked_by.name"/></span><br/>
+						                               </td>
+					                                </tr> 
+					                             </table>
+					                             <table class="float-left"  style="width:50% !important;border: 1px solid black;" >  
+					                             	<tr style= "border: 1px solid black;">
+							                           <td><h5><strong><br/> Witnessed By: </strong></h5><br/>
+							                           		<span style="margin-left:20%;"><t t-esc="docs.witnessed_by.name"/><br/></span>
+							                           </td>
+							                         </tr>
+							                         <tr> 
+							                           <td><h5> <strong> <br/>Attested By : </strong></h5> <br/>
+							                           		<span style="margin-left:20%;"><t t-esc="docs.attested_by.name"/><br/> </span>
+							                           </td>
+					                                </tr>
+					                            </table> 
+			                           </div>
+<style>	                            
+       svg {
+		    overflow: hidden;
+		    vertical-align: middle;
+		    display: block;
+		    margin: auto;
+		}  
+		.chart_legend{
+			width: 80%;
+		    display: inline-block;
+		    margin-left: 10%;
+		    margin-right: 10%;
+		}      
+		#line_graph path { 
+		    stroke-width: 2;
+		    fill: none;
+		    stroke-linejoin: round;
+		    stroke-linecap: round;
+		}
+		#line_graph circle { 
+		  stroke-width: 2;
+		  fill: rgb(1,16,47)
+		}
+		#line_graph .axis path,
+		#line_graph .axis line {
+		  fill: none;
+		  stroke: rgba(128,135,150, 0.6);
+		  stroke-width: 1;
+		  shape-rendering: crispEdges;
+		}
+		
+		#line_graph .axis text {
+		  fill: #999;
+		  font-size: .8rem;
+		}
+		
+</style>
+	
+	
+  
+<script  type="text/javascript">
+   
+
+
+// Draw a line chart
+var svg = d3.select('svg'),
+  margin = {top: 40, right: 20, bottom: 80, left: 60};
+  width = +svg.attr('width') - margin.left - margin.right,
+  height = +svg.attr('height') - margin.top - margin.bottom,
+  g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+var div = d3.select(".svg-wrapper").append("div").attr("class", "toolTip");
+
+// Set the X scale
+var x = d3.scale.linear().range([0, width]);
+
+// Set the Y scale
+var y = d3.scale.linear().range([height, 0]);
+
+// Set the color scale
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+.scale(x)
+//.tickSize(-height)
+//.orient("bottom");
+
+var yAxis = d3.svg.axis()
+.scale(y)
+.orient("left");
+
+var line = d3.svg.line()
+//.interpolate("basis")
+.x(function(d) {
+  return x(d.date);
+})
+.y(function(d) {
+  return y(d.attackType);
+});
+  
+  // load the data
+  var data = JSON.parse((document.getElementById("progress").innerHTML).replace(/'/g, '"'))
+  
+  // Select the important columns
+  color.domain(d3.keys(data[0]).filter(function(key) {
+      return key !== "labels";
+  }));
+  // Correct the types
+  data.forEach(function(d) {
+    d.date =(d.labels);
+  });
+  
+  var attackTypes = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: data.map(function(d) {
+        return {
+          date: d.date,
+          attackType: +d[name]
+        };
+      })
+    };
+  });
+
+  // Set the X domain
+  x.domain(d3.extent(data, function(d) {
+    return d.date;
+  }));
+  
+  // Set the Y domain
+  y.domain([
+    d3.min(attackTypes, function(c) {
+      return d3.min(c.values, function(v) {
+        return v.attackType;
+      });
+    }),
+    d3.max(attackTypes, function(c) {
+      return d3.max(c.values, function(v) {
+        return v.attackType;
+      });
+    })
+  ]);
+  
+  // Set the X axis
+  g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+    
+  // Set the Y axis
+  g.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+
+
+  // text label for the x axis
+  g.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("Number of Blows");
+      
+   g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Percent Moisture");  
+
+  // Draw the lines
+  var attacker = g.selectAll(".attacker")
+    .data(attackTypes)
+    .enter().append("g")
+    .attr("class", "attacker");
+
+  attacker.append("path")
+    .attr("class", "line")
+    .attr("d", function(d) {
+      return line(d.values);
+    })
+    .style("stroke", function(d) {
+      return color(d.name);
+    })
+    
+  // Add the circles
+  attacker.append("g").selectAll("circle")
+    .data(function(d){return d.values})
+    .enter()
+    .append("circle")
+    .attr("r", 3)
+    .attr("cx", function(dd){return x(dd.date)})
+    .attr("cy", function(dd){return y(dd.attackType)})
+    .attr("fill", "none")
+    .attr("stroke", function(d){return color(this.parentNode.__data__.name)});
+    
+</script>
+                           
+		 						</td>
+		 					</t>
+		 				</div>
+		 			</t>
+		 		</t>
+		 	</t>
+    	</template>
+    	<template id="report_soil_consistency_document_advance">
+			<t t-call="web.html_container">
+				<t t-call="web.html_container">
+					<t t-call="web.internal_layout">
+						<div class="page" style="font-size:20px !important;">
+							<link rel="stylesheet" type="text/css" href="/web/static/lib/nvd3/nv.d3.css"/>
+	             			<script src="https://d3js.org/d3.v3.min.js"></script>
+								<t t-if="docs">
+		 							<td class="header">
+								 	 <h5 class = "text-right" >Date: <t t-esc="docs.consistency_test_date" /></h5>
+								 	 <h5 class = "text-right" >Lab No. : <t t-esc="docs.name" /></h5>
+								 	 <h4 class='text-center'> REPORT FOR SOIL CONSISTENCY TEST </h4>
+									 <div width="100%">
+			 							<div width= "100%">
+			                            	<table class="float-left " style="width:50% !important;">
+			                            		<thead>
+			                             			<tr>
+						                            	<td><strong>Project :</strong></td>
+						                            	<td><strong t-esc="docs.project_id.name" /></td>
+						                            </tr>
+						                            <tr>
+							                            <td><span>Location: </span> </td>
+							                            <td><span t-esc="docs.location_id.name" /></td>
+						                           	</tr>
+						                           	<tr>
+						                            	<td><span>Contractor:</span></td>
+						                             	<td><span t-esc="docs.contractor.name" /></td>
+						                             </tr>
+						                             <tr>
+							                         	<td><span>Kind of Material:</span></td>
+							                         	<td><span t-esc="docs.kind_of_material.name" /></td>
+							                         </tr>
+						                             <tr>
+						                             	<td>Source :</td>
+						                             	<td><span t-esc="docs.original_source"/></td>
+						                             </tr>
+					                             </thead>
+		                                   </table>
+					                       <table class="float-left " style="width:50% !important;">
+					                            <thead>
+						                        	<tr>
+					                                	<td><span>Sampled ID: </span></td>
+					                                	<td><span t-esc="docs.sample_identify" /></td>
+				                                	</tr>
+						                            <tr>
+						                             	<td><span>Sampled By: </span></td>
+						                               	<td><span t-esc="docs.sampled_by.name" /></td>
+					                                </tr>
+						                           	<tr>
+						                                <td><span>Submitted_by:</span></td>
+						                                <td><span t-esc="docs.submitted_by.name" /></td>
+						                            </tr>
+						                            <tr>
+						                               <td>Date Submitted:</td>
+						                               <td><span t-esc="docs.date_submit"/></td>
+					                               </tr>
+						                           <tr>
+						                               <td><span>Tested_by:</span></td>
+						                               <td><span t-esc="docs.tested_by.name" /></td>
+						                           </tr>
+					                           </thead>
+				                           </table>
+               				           </div>
+           				           </div>
+               					   <table class="table table-condensed">
+               					   		<tbody>
+               	  							<tr >
+												<th class="text-center">LIQUID LIMIT - PLASTIC LIMIT - PLASTICITY INDEX</th>
+												<th></th>
+											</tr>
+										</tbody>
+										 	<tr>
+												<th class= 'text-center'>LIQUID LIMIT </th>
+												<th>PLASTIC LIMIT</th>
+										 	</tr>
+										</table> 
+										<table class="table table-condensed">
+											<tr class="highlight overlap">
+										  		<td class="text-left">Trial No.</td>
+													<t t-foreach="docs_line" t-as="order">
+														<td>
+															<span>
+																<t t-esc="order['trial_no']" />
+															</span>
+														</td>
+										        	</t>
+									        	<td></td>
+									        	<td></td>
+										        	<t t-foreach="liquid" t-as="order">
+														<td>
+															<span>
+																<t t-esc="order['trial_no']" />
+															</span>
+														</td>
+										        	</t>
+									  		  </tr>
+											  <tr class="highlight overlap">
+											  		<td class="text-left">Dish No.</td>
+														<t t-foreach="docs_line" t-as="order">
+															<td>
+																<span>
+																	<t t-esc="order['dish_no']" />
+																</span>
+															</td>
+											        	</t>
+											        <td></td>
+											        <td></td>
+											        	<t t-foreach="liquid" t-as="order">
+															<td>
+																<span>
+																	<t t-esc="order['dish_no']" />
+																</span>
+															</td>
+											        	</t>
+									  			  </tr>
+												  <tr class="highlight overlap">
+												  		<td class="text-left">No. of Blows Required</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<!-- <t t-esc="order['determination_no']" /> -->
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['no_of_blow_req']" />
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												  <tr class="highlight overlap">
+												  		<td class="text-left">No. of Blows</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<!-- <t t-esc="order['determination_no']" /> -->
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['no_of_blow']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">1. Weight of dish + wet soil</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_wetsoil']" />
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_wetsoil']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">2. Weight of dish + dry soil</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_drysoil']" />
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish_drysoil']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">3. Weight of dish</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish']" />
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_dish']" />
+																	</span>
+																</td>
+													        </t>
+												   </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">4. Weight of water (1-2)</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_water']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_water']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">5. Weight of dry soil</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_drysoil']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['wt_of_drysoil']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">6. % Moisture (4/5 x 100)</td>
+															<t t-foreach="docs_line" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['moisture_content']"  t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												        <td></td>
+												        <td></td>
+													         <t t-foreach="liquid" t-as="order">
+																<td>
+																	<span>
+																		<t t-esc="order['moisture_content']" t-options='{"widget": "float", "precision": 2}'/>
+																	</span>
+																</td>
+													        </t>
+												  </tr>
+												   <tr class="highlight overlap">
+												  		<td class="text-left">7. Average Plastic Limit</td>
+												  			<t>
+																<td>
+																	<t></t>
+																</td>
+																<td></td>
+																<td>
+																	<span>
+																		<t t-esc="docs.avg_plastic_limit"  t-options='{"widget": "float", "precision": 2}' />
+																	</span>
+															    </td>
+																<td> <t></t></td>
+																<td><t></t></td>
+																<td> <t></t></td>
+																<td><t></t></td>
+												            </t>
+											    	</tr>
+						               </table>
+              						   	<hr></hr>
+						                <div  style="width:100%; display:inline-block;float:left;" >
+				                         	<t t-if="len(graph)>=1">
+					                            <table class="table float-right" style="width:100%!important; display:inline-block;">
+					                             	<div id="progress" style="display:none"><t t-esc="graph" /></div>
+					                             	<div  class="svg-wrapper" id="line_graph" style="width:100%;height:500px;display: inline-block;border: 1px solid;margin-top: 1%;" > 
+		                    	                		<h5 style="text-align: center;margin-top: 2%;margin-bottom: 5%;"></h5>
+		                    	                 		<svg id="line_graph_svg" width="800" height="400"/>
+		                                          	</div>
+					                          	</table> 
+				                            </t>
+					                         <t t-else="" >
+				                          		<table class="table float-right" style="width:100%!important; display:inline-block;">
+				                           			<div  class="svg-wrapper" id="line_graph" style="width:100%;height:500px;display: inline-block;border: 1px solid;margin-top: 1%;" >
+				                           				<h3 style="text-align: center; margin-top:18%; "> No Data Available </h3> 
+				                           			</div>
+				                           		</table>
+				                             </t>
+					                     </div>
+				                        
+<style>	                            
+       svg {
+		    overflow: hidden;
+		    vertical-align: middle;
+		    display: block;
+		    margin: auto;
+		}  
+		.chart_legend{
+			width: 80%;
+		    display: inline-block;
+		    margin-left: 10%;
+		    margin-right: 10%;
+		}      
+		#line_graph path { 
+		    stroke-width: 2;
+		    fill: none;
+		    stroke-linejoin: round;
+		    stroke-linecap: round;
+		}
+		#line_graph circle { 
+		  stroke-width: 2;
+		  fill: rgb(1,16,47)
+		}
+		#line_graph .axis path,
+		#line_graph .axis line {
+		  fill: none;
+		  stroke: rgba(128,135,150, 0.6);
+		  stroke-width: 1;
+		  shape-rendering: crispEdges;
+		}
+		
+		#line_graph .axis text {
+		  fill: #999;
+		  font-size: .8rem;
+		}
+		
+</style>
+	
+	
+  
+<script  type="text/javascript">
+   
+
+
+// Draw a line chart
+var svg = d3.select('svg'),
+  margin = {top: 40, right: 20, bottom: 80, left: 60};
+  width = +svg.attr('width') - margin.left - margin.right,
+  height = +svg.attr('height') - margin.top - margin.bottom,
+  g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+var div = d3.select(".svg-wrapper").append("div").attr("class", "toolTip");
+
+// Set the X scale
+var x = d3.scale.linear().range([0, width]);
+
+// Set the Y scale
+var y = d3.scale.linear().range([height, 0]);
+
+// Set the color scale
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+.scale(x)
+//.tickSize(-height)
+//.orient("bottom");
+
+var yAxis = d3.svg.axis()
+.scale(y)
+.orient("left");
+
+var line = d3.svg.line()
+//.interpolate("basis")
+.x(function(d) {
+  return x(d.date);
+})
+.y(function(d) {
+  return y(d.attackType);
+});
+  
+  // load the data
+  var data = JSON.parse((document.getElementById("progress").innerHTML).replace(/'/g, '"'))
+  
+  // Select the important columns
+  color.domain(d3.keys(data[0]).filter(function(key) {
+      return key !== "labels";
+  }));
+  // Correct the types
+  data.forEach(function(d) {
+    d.date =(d.labels);
+  });
+  
+  var attackTypes = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: data.map(function(d) {
+        return {
+          date: d.date,
+          attackType: +d[name]
+        };
+      })
+    };
+  });
+
+  // Set the X domain
+  x.domain(d3.extent(data, function(d) {
+    return d.date;
+  }));
+  
+  // Set the Y domain
+  y.domain([
+    d3.min(attackTypes, function(c) {
+      return d3.min(c.values, function(v) {
+        return v.attackType;
+      });
+    }),
+    d3.max(attackTypes, function(c) {
+      return d3.max(c.values, function(v) {
+        return v.attackType;
+      });
+    })
+  ]);
+  
+  // Set the X axis
+  g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+    
+  // Set the Y axis
+  g.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+
+
+  // text label for the x axis
+  g.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("Number of Blows");
+      
+   g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Percent Moisture");  
+
+  // Draw the lines
+  var attacker = g.selectAll(".attacker")
+    .data(attackTypes)
+    .enter().append("g")
+    .attr("class", "attacker");
+
+  attacker.append("path")
+    .attr("class", "line")
+    .attr("d", function(d) {
+      return line(d.values);
+    })
+    .style("stroke", function(d) {
+      return color(d.name);
+    })
+    
+  // Add the circles
+  attacker.append("g").selectAll("circle")
+    .data(function(d){return d.values})
+    .enter()
+    .append("circle")
+    .attr("r", 3)
+    .attr("cx", function(dd){return x(dd.date)})
+    .attr("cy", function(dd){return y(dd.attackType)})
+    .attr("fill", "none")
+    .attr("stroke", function(d){return color(this.parentNode.__data__.name)});
+    
+</script>
+                           
+		 						</td>
+		 					</t>
+		 				</div>
+		 			</t>
+		 		</t>
+		 	</t>
+    	</template>
+	</data>
+</odoo>

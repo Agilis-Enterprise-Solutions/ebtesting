@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Soil Consistency Tree View -->
+		<record id="soil_consistency_view_tree" model="ir.ui.view">
+			<field name="name">skit.soil.consistency.tree</field>
+			<field name="model">skit.soil.consistency</field>
+			<field name="arch" type="xml">
+				<tree string="Soil Consistency">
+					<field name="name"/>
+					<field name="consistency_test_date"></field>
+				    <field name="project_id"></field>
+				    <field name="location_id"></field>
+				    <field name="sample_identify"></field>
+				    <field name="kind_of_material"></field>
+				</tree>
+			</field>
+		</record>
+		
+			<!-- Soil Consistency Form View -->
+		<record id="soil_consistency_view_form" model="ir.ui.view">
+				<field name="name">skit.soil.consistency.form</field>
+				<field name="model">skit.soil.consistency</field>
+				<field name="arch" type="xml">
+					<form string="Soil Consistency">
+						<header>
+					       	<button name="consis_action_submit" string="Submit" class="oe_highlight"
+					       			type="object" attrs="{'invisible': ['|','|',('plastic_limit_ids','=',[]),
+					       			('liquid_limit_ids','=',[]),('state','not in',['draft'])]}"/>
+					       	<button name ="consis_action_confirm" string="Confirm" class="oe_highlight" states="submit" type="object"/>
+					        <button name ="consis_action_verify" string="Verify" class="oe_highlight" states="confirm" type="object"/>
+					        <button name="consis_action_approve" string="Approve" class="oe_highlight" states="verify" type="object"/>
+					        <button name ="consis_action_cancel" states="draft,submit,confirm,verify" string="Cancel"  type="object"/>
+					        <button name="consis_action_draft" states="cancelled" type="object" string="Reset" class="oe_highlight"/>
+					        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,verify,approved" 
+					           	statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+					    </header>
+						<sheet>
+							<h3>SOIL CONSISTENCY TEST </h3>
+			              	<div class="oe_title">
+								<group>
+										<h2>
+							            	<field name="name" readonly="1"/>
+							            </h2>
+							            <group>
+							            <field name="consistency_test_date" readonly="1"/>
+						            </group>
+					            </group>
+			       			</div>
+			       			<group>
+		              	 		<field name="project_id" string="Project Name" required="1" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"  />
+		              	 	</group>
+				            <group>
+				            	<group>
+				            		<field name="task_id"  invisible="1"/>
+				            		<field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sample_identify" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="qty_rep" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		<field name="supplied_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"  required="1"/>
+				            		<field name="sampled_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="submitted_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				           		</group>
+				           		<group>
+				                     <field name="contractor" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                     <field name="original_source"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="supplied_at" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="spec_item_no" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                     <field name="proposed_use" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="designation_sampled" />
+				                     <field name="designation_submitted" />
+				                     <field name="date_performed" />
+				                     <field name="date_submit" />
+		                      </group>
+				            </group>
+				            <group>
+				            	<group>
+					            	<field name="liquid_limit" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="plastic_limit" readonly ="1"/>
+					            	<field name="plasticity_index" readonly="1"/>
+				            	</group>
+				            	<group>
+				            		<field name="consistency_line_graph" widget="kanban_line_graph" nolabel="1"/>
+				            	</group>
+				            </group>
+				            
+				            <notebook>
+				            	<!-- PLASTICITY INDEX -->
+				            	<page string="PLASTICITY INDEX">
+				            		<group name="plastic_limit" string="PLASTIC LIMIT">
+				            			<field name="plastic_limit_ids" nolabel="1">
+				            				<tree string="Plastic Limit" editable = "true">
+				            					<field name="trial_no"/>
+				            					<field name="dish_no"/>
+				            					<field name="wt_of_dish_wetsoil"/>
+				            					<field name="wt_of_dish_drysoil"/>
+				            					<field name="wt_of_dish"/>
+				            					<field name="wt_of_water"/>
+				            					<field name="wt_of_drysoil"/>
+				            					<field name="moisture_content"/>
+				            				</tree>
+				            			</field>
+				            			<group>
+				            				<field name="avg_plastic_limit"/>
+				            			</group>
+				            		</group>
+				            		<group name="liquid_limit" string="LIQUID LIMIT">
+				            			<field name="liquid_limit_ids" nolabel="1">
+				            				<tree string="Liquid Limit" editable="bottom">
+				            					<field name="trial_no"/>
+				            					<field name="dish_no"/>
+				            					<field name="no_of_blow_req"/>
+				            					<field name="no_of_blow"/>
+				            					<field name="wt_of_dish_wetsoil"/>
+				            					<field name="wt_of_dish_drysoil"/>
+				            					<field name="wt_of_dish"/>
+				            					<field name="wt_of_water"/>
+				            					<field name="wt_of_drysoil"/>
+				            					<field name="moisture_content"/>
+				            				</tree>
+				            			</field>
+				            		</group>
+				            	</page>
+				            	<!-- Other info Tab -->
+				            	<page string="OTHER INFO">
+					            	<group>
+					            		<group>
+					            			<field name="tested_by"/>
+					            			<field name="checked_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="tested_date"/>
+					            			<field name="checked_date" />
+					            		</group>
+				            			<group>
+					            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="witnessed_date" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_date"/>
+					            		</group>
+				            		</group>
+				            	</page>
+				            </notebook>
+				         </sheet>
+					</form>
+				</field>
+			</record>
+			<!-- Soil Consistency Test Action -->
+    		<record id="skit_soil_consistency_action" model="ir.actions.act_window">
+		        <field name="name">Soil Consistency Test</field>
+		        <field name="res_model">skit.soil.consistency</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree,form</field>
+		        <field name="help" type="html">
+		        	<p class="o_view_nocontent_smiling_face">
+                		Create Soil Consistency Test
+                	</p>
+                </field>
+		        
+    		</record>
+    		
+    		<!-- Soil Compaction Test Menu -->
+		     <menuitem id="skit_soil_consistency_menu" name="Soil Consistency Test"
+		     	parent="skit_main_soil_menu" sequence="4" action="skit_soil_consistency_action"/>
+	</data>
+</odoo>

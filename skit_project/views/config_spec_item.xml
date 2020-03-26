@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Tree view for Spec' Item No -->
+		<record id="skit_spec_item_no_tree_view" model="ir.ui.view">
+			<field name="name">config.specitem.tree</field>
+			<field name="model">skit.config.specitem</field>
+			<field name="arch" type="xml">
+				<tree string="Spec' Item No">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view for Spec' Item No-->
+		<record id="skit_spec_item_no_form_view" model="ir.ui.view" >
+	        <field name="name">config.specitem.form</field>
+	        <field name="model">skit.config.specitem</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string= "Spec' Item No">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+							</group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		
+		<!-- Config Spec' Item No Action -->
+   		<record id="skit_spec_item_no_action" model="ir.actions.act_window">
+		        <field name="name">Spec' Item No</field>
+		        <field name="res_model">skit.config.specitem</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree,form</field>
+		        <field name="help" type="html">
+		        	<p class="o_view_nocontent_smiling_face">
+                		Create New Spec' Item No
+                	</p>
+                </field>
+    		</record>
+    		
+   		<!--   Kind Of Material Menu -->
+   		<menuitem id="menu_spec_item_no" action="skit_spec_item_no_action" 
+    		name="Spec' Item No" parent="project.menu_project_config" sequence="13"/>
+    		
+    		</data>
+    		</odoo>
+    		

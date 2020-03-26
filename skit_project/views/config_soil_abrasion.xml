@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Tree view for Config Soil Abrasion -->
+		<record id="skit_config_soil_abrasion_tree_view" model="ir.ui.view">
+			<field name="name">config.soil.abrasion.tree</field>
+			<field name="model">config.soil.abrasion</field>
+			<field name="arch" type="xml">
+				<tree string="Abrasion Config">
+					<field name="name"/>
+					<field name="retained_on"/>
+					<field name="grading"></field>
+				    <field name="specification"></field>
+				    <field name="total"></field>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view for Config Soil Abrasion -->
+		<record id="skit_config_soil_abrasion_form_view" model="ir.ui.view" >
+	        <field name="name">config.soil.abrasion.form</field>
+	        <field name="model">config.soil.abrasion</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Abrasion config">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+				        		<field name="retained_on"/>
+								<field name="grading"/>
+							</group>
+							<group>
+							    <field name="specification"/>
+							    <field name="total"/>
+						    </group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		
+		<!-- Config Soil Abrasion Action -->
+   		<record id="skit_config_soil_abrasion_action" model="ir.actions.act_window">
+	        <field name="name">Config Soil Abrasion</field>
+	        <field name="res_model">config.soil.abrasion</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+	         <field name="help" type="html">
+            	<p class="o_view_nocontent_smiling_face">
+               	Create Soil Abrasion Configuration
+             	</p>
+            </field>
+   		</record>
+   		
+   		<!-- Tree view for Config  Abrasion -->
+		<record id="skit_config_abrasion_tree_view" model="ir.ui.view">
+			<field name="name">config.abrasion.tree</field>
+			<field name="model">config.abrasion</field>
+			<field name="arch" type="xml">
+				<tree string="Abrasion Config">
+					<field name="name"/>
+					<field name="no_of_sphere"/>
+					<field name="mass_charge"></field>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view for Config  Abrasion -->
+		<record id="skit_config_abrasion_form_view" model="ir.ui.view" >
+	        <field name="name">config.abrasion.form</field>
+	        <field name="model">config.abrasion</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Abrasion config">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+				        		<field name="no_of_sphere"/>
+								<field name="mass_charge"/>
+							</group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		
+		<!-- Config Abrasion Action -->
+   		<record id="skit_config_abrasion_action" model="ir.actions.act_window">
+	        <field name="name">Config Abrasion</field>
+	        <field name="res_model">config.abrasion</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+	        <field name="help" type="html">
+            	<p class="o_view_nocontent_smiling_face">
+               	Create Soil Abrasion Configuration
+             	</p>
+            </field>
+   		</record>
+   		
+   		<menuitem id="abrasion_config_menu" 
+	     name="Soil Abrasion Configuration"
+	   	 parent="project.menu_project_config" 
+	   	 sequence="0"/>
+   	 
+	   	 <menuitem id="skit_config_soil_abrasion_menu" 
+	     	name="Soil Abrasion 1"
+	   	 	parent="abrasion_config_menu" 
+	   	 	sequence="1" 
+	   	 	action="skit_config_soil_abrasion_action"/>
+	   	 
+	   	 <menuitem id="skit_config_abrasion_menu" 
+	     	name="Soil Abrasion 2"
+	   	 	parent="abrasion_config_menu" 
+	   	 	sequence="2" 
+	   	 	action="skit_config_abrasion_action"/>
+   		
+	</data>
+</odoo>

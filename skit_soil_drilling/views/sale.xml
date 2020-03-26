@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      	<!-- Sale Order Form Inherit -->
+   		<record id="skit_view_order_form_inherit" model="ir.ui.view">
+            <field name="name">skit.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='partner_id']" position="after">
+            		<field name="journal_id"/>
+            		<field name="project_id"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="before">
+            		<field name="sale_type"/>
+            		<field name="branch_id" attrs="{'required': [('sale_type', '=', 'laboratory')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+            		<field name="isassociate_project"/>
+            		<button name="project_document" string="Create Project Document" style="display:contents; color: #7C7BAD;"
+            		attrs="{'invisible': [('isassociate_project', '=', False)] }"  type="object"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_id']"  position="before" >
+	                <field name = "date" attrs="{'column_invisible': [('parent.sale_type', '=', 'soil drilling')],'required': [('parent.sale_type', '=', 'laboratory')]}"/>
+	                <field name = "lab_no"  attrs="{'column_invisible': [('parent.sale_type', '=', 'soil drilling')]}" widget="many2many_tags" readonly="1"/>
+	                <field name = "test_desired"  attrs="{'column_invisible': [('parent.sale_type', '=', 'soil drilling')]}" readonly="1"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='product_id']"  position="replace" >
+                	<field name = "product_id" string = 'Services' 
+                	 required = "1"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='name']"  position="replace" >
+                	<field name = "section"  />
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//field[@name='order_line']"  position="after" >
+                	<group>
+                    	<group >
+                 			<div class="oe_inline"  >
+                            	<field name="task_no_ids"  attrs="{'invisible': [('sale_type', '=', 'laboratory')]}" >
+                           			<tree  editable="bottom" string="Task"    >
+                                		<field name="task_no"  />
+                            			<field name="task_name"  />
+                            		</tree>
+                           		</field>
+                             </div>
+                        </group>
+                        <xpath expr="//page[@name='order_lines']//group[@name='sale_total']"  position="replace" >
+                        	<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_totals">
+	                   	  	  	<field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                          	<field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                             	<div class="oe_subtotal_footer_separator oe_inline o_td_label">
+	                                  	<label for="amount_total" />
+	                              	</div>
+	                           <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                      		</group>
+                      </xpath>
+                  </group>
+             </xpath>
+             <xpath expr="//page[@name='order_lines']//group[@name='sale_total']"  position="replace" >
+             </xpath>
+           <!--  Added New Tab in Sale order window -->
+            <xpath expr="//page[@name='other_information']" position="after">
+				<page string="Scope of Work" attrs="{'invisible': [('sale_type','!=','soil drilling')]}">
+					<form>
+					<group>
+						<group>
+							<field name="no_of_boreholes"/>
+							<field name="depth"/>
+							<field name="intervals"/>
+						</group>
+						</group>
+						<field name="scope_note" placeholder="Scope of Work Notes...."/>
+					</form>
+				</page>
+			</xpath>
+			<xpath  expr="//button[@name='action_confirm']" position="before">
+             		<button name ="generate_lab_no" string="Generate Lab No." type="object" 
+             			class="oe_highlight" attrs="{'invisible': [('state','=','sale')]}" />
+            </xpath>
+         </field>
+       </record> 
+       <!--  To hide Optional product tab in sale module -->
+       <record id="skit_view_order_form_inheritss" model="ir.ui.view">
+           <field name="name">sale.order.form.payment</field>
+           <field name="model">sale.order</field>
+           <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+           <field name="arch" type="xml">
+           		<xpath expr="//page/field[@name='sale_order_option_ids']" position="replace"> </xpath>
+           </field>
+      </record>
+    </data>
+</odoo>

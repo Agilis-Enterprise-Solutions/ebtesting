@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_wizard_user,skit.project.wizard,model_skit_project_wizard,base.group_user,1,1,1,1
+access_project_wizard_manager,skit.project.wizard,model_skit_project_wizard,base.group_public,1,1,1,1
+access_skit_task_user,skit.task,model_skit_task,base.group_user,1,1,1,1
+access_skit_task_manager,skit.task,model_skit_task,base.group_public,1,1,1,1
+access_laboratory_number_user,laboratory.number,model_laboratory_number,base.group_user,1,1,1,1
+access_laboratory_number_manager,laboratory.number,model_laboratory_number,base.group_public,1,1,1,1
