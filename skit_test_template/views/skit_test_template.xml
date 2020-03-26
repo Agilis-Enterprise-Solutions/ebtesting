@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<!-- Test Template Tree View -->
+		<record id="test_template_view_tree" model="ir.ui.view">
+			<field name="name">skit.test.template.tree</field>
+			<field name="model">skit.test.template</field>
+			<field name="arch" type="xml">
+				<tree string="Test Template">
+					<field name="name"/>
+					<field name="test_category"></field>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Test Template Form View -->
+		<record id="test_template_view_form" model="ir.ui.view">
+			<field name="name">skit.test.template.form</field>
+			<field name="model">skit.test.template</field>
+			<field name="arch" type="xml">
+				<form string="Test Template">
+					<sheet>
+						<group>
+							<field name="name"/>
+							<field name="test_category"></field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<!-- Test Template Action-->
+   	 <record id="open_view_test_template" model="ir.actions.act_window">
+           <field name="name">Test Template</field>
+           <field name="res_model">skit.test.template</field>
+           <field name="view_type">form</field>
+           <field name="help" type="html">
+             <p class="o_view_nocontent_smiling_face">
+               Create a new Test Template
+             </p>
+           </field>
+       </record>
+    	
+    	<!-- Test Template Menu-->
+    	<menuitem id="menu_test_template" action="open_view_test_template" 
+    		name="Test Template" parent="project.menu_project_config" sequence="10"/>
+	</data>
+</odoo>

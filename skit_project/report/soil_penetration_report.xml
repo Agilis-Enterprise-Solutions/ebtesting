@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	    <!-- Paper Format For  Soil Penetration Report -->
+		<record model="report.paperformat" id="report_soil_penetration">
+			<field name="name">soil penetration</field>
+			<field name="model">skit.soil.penetration</field>
+			<field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">380</field>
+            <field name="page_width">400</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">130</field>
+			<field name="report_name">skit_project.report_soil_penetration_document_advance</field>
+		</record>
+		
+        <!-- Soil Penetration Report -->
+        <report 
+			model="skit.soil.penetration" 
+			id="action_report_soil_penetrations" 
+			name="skit_project.report_soil_penetration_document_advance" 
+			file="skit_project.report_soil_penetration_document_advance" 
+			report_type="qweb-pdf" paperformat="skit_project.report_soil_penetration"  string="Print Advance Copy"/>
+		<report 
+			model="skit.soil.penetration" 
+			id="action_report_soil_penetration" 
+			name="skit_project.report_soil_penetration_document" 
+			file="skit_project.report_soil_penetration_document" 
+			report_type="qweb-pdf" paperformat="skit_project.report_soil_penetration"  string="Print Final Copy"/>
+	</data>
+</odoo>

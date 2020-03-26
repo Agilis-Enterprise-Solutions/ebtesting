@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="soil_aggregate_view_tree" model="ir.ui.view">
+			<field name="name">skit.soil.aggregate.tree</field>
+			<field name="model">skit.soil.aggregate</field>
+			<field name="arch" type="xml">
+				<tree string="Soil Aggregate">
+					<field name="name"/>
+					<field name="date_labtest"></field>
+				    <field name="project_id"></field>
+				    <field name="location_id"></field>
+				    <field name="sample_identify"></field>
+				    <field name="kind_of_material"></field>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_soil_aggregate_form" model="ir.ui.view" >
+	        <field name="name">skit.soil.aggregate.form</field>
+	        <field name="model">skit.soil.aggregate</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Soil Aggregate">
+	        		<header>
+					       	<button name="sa_action_submit" string="Submit" class="oe_highlight" 
+					       			type="object" attrs="{'invisible': ['|','|',('compaction_tab_ids','=',[]),('consistency_tab_ids','=',[]),
+					       			('state','not in',['draft'])]}"/>
+					        <button name ="sa_action_confirm" string="Confirm" class="oe_highlight" states="submit" type="object"/>
+					        <button name ="sa_action_verify" string="Verify" class="oe_highlight" states="confirm" type="object"/>
+					        <button name="sa_action_approve" string="Approve" class="oe_highlight" states="verify" type="object"/>
+					        <button name ="sa_action_cancel" states="draft,submit,confirm,verify" string="Cancel"  type="object"/>
+					        <button name="sa_action_reset" states="cancelled" type="object" string="Reset" class="oe_highlight"/>
+					        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,verify,approved" 
+					           	statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+					</header>
+	        		<sheet>
+	        			<h3>SOIL AGGREGATE TEST</h3>
+			              	<div class="oe_title">
+								<group>
+										<h2>
+							            	<field name="name" readonly="1"/>
+							            </h2>
+							            <group>
+							            <field name="date_labtest" readonly="1"/>
+						            </group>
+					            </group>
+			       			</div>
+		              	 <group>
+		              	 	<field name="project_id" string="Project Name" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		              	 </group>
+		              	 <group> 
+		              		<group>
+			                    <field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="sample_identify" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                	<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="qty_rep" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                    <field name="supplied_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="sample_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="submitted_by"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		                     </group>
+		                     <group>
+			                     <field name="contractor" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                     <field name="source"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                     <field name="sample" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                     <field name="spec_item_no"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                     <field name="proposed" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                     <field name="designation_sampled" />
+			                     <field name="designation_submitted" />
+			                     <field name="date_performed" />
+			                     <field name="date_submit" />
+		                      </group>
+		                 </group>
+			       		 <notebook>
+				       		<page name="summary" string="TEST SUMMARY INFO" >
+					       		  <group>
+						       		  <group string="Related Lab Results" >
+							       		 
+							       		  <field name="sieve_analysis" readonly="1"/>
+							       		  <field name="soil_consistency" readonly="1"/>
+							       		  <field name="soil_abrasion" readonly="1"/>
+							       		  <field name="soil_compaction" readonly="1"/>
+							       		  <field name="soil_penetration" readonly="1"/>  
+						       		   </group>
+						       		   <group>
+						       		   </group>
+					       		   </group>
+					       		   <group>
+						       		   <field name="remarks" />
+						       	   </group>
+					       		  <group>
+					            		<group>
+					            			<field name="tested_by"/>
+					            			<field name="checked_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="tested_date"/>
+					            			<field name="checked_date" />
+					            		</group>
+				            			<group>
+					            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="witnessed_date" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_date"/>
+					            		</group>
+				            		</group>
+	 			       		</page>   
+				       		<page name="analysis" string="SIEVE ANALYSIS" >
+					       		<group>
+						       		<group>
+						       			<field name='sieve_lab_no' widget='selection' attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						       		</group>
+					       		</group>
+					       		<group>
+					       		<field name="sieve_tab_ids" nolabel="1" >
+						       		<tree name="Sieve_Analysis"  readonly="1" create="0">
+							       		<field name="grading" />
+							       		<field name="requirement"/>
+							       		<field name="result"/>
+						       		</tree>
+					       		</field>
+					       		</group>
+				       		</page>
+				       		<page name="consistency" string="SOIL CONSISTENCY">
+					       		<group>
+							       		<group>
+							       			<field name='consistency_lab_no'  widget='selection' attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		</group>
+						       	</group>
+						       	<group>
+					       		<field name="consistency_tab_ids" nolabel="1" >
+						       		<tree name="Soil_Consistency" create="0" >
+							       		<field name="grading" readonly="1"/>
+							       		<field name="requirement" readonly="1"/>
+							       		<field name="result" readonly="1"/>
+						       		</tree>
+					       		</field>
+					       		</group>
+					       	</page>
+				       		<page name="compaction" string="SOIL COMPACTION" >
+				       			<group>
+							       		<group>
+							       			<field name='compaction_lab_no' widget='selection' attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		</group>
+						       	</group>
+						       	<group>
+					       		<field name="compaction_tab_ids" nolabel="1" >
+						       		<tree name="Soil_Compaction"  readonly="1" create="0">
+							       		<field name="grading"/>
+							       		<field name="requirement"/>
+							       		<field name="result"/>
+						       		</tree>
+					       		</field>
+					       		</group>
+					       	</page>
+				       		<page name="abrasion" string="SOIL ABRASION">
+				       			<group>
+							       		<group>
+							       			<field name='abrasion_lab_no' widget='selection' attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		</group>
+						       	</group>
+						       	<group>
+					       		<field name="abrasion_tab_ids" nolabel="1" >
+						       		<tree name="Soil_Abrasion"  readonly="1" create="0">
+							       		<field name="grading"/>
+							       		<field name="requirement"/>
+							       		<field name="result"/>
+						       		</tree>
+					       		</field>
+					       		</group>
+					       	</page>
+				       		<page name="penetration" string="SOIL PENETRATION">
+				       			<group>
+							       		<group>
+							       			<field name='penetration_lab_no' widget='selection' attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		</group>
+						       	</group>
+						       	<group>
+					       		<field name="penetration_tab_ids" nolabel="1" >
+						       		<tree name="Soil_Penetration"  readonly="1" create="0">
+							       		<field name="grading"/>
+							       		<field name="requirement"/>
+							       		<field name="result"/>
+						       		</tree>
+					       		</field>
+					       		</group>
+					       	</page>
+			       		</notebook>
+	       		 	</sheet>
+	    		 </form>
+	         </field>
+		</record>
+		
+		<menuitem id="skit_laboratory_menu" 
+		name="Laboratory Test" 
+		parent="project.menu_main_pm"
+	    sequence="1" 
+	    groups="project.group_project_manager" />
+		
+		<menuitem id="skit_main_soil_menu" 
+        name="Soil"
+        parent="skit_laboratory_menu"
+        sequence="100"/>
+		
+	   	<record id="soil_aggregate_action"  model="ir.actions.act_window" >
+		     <field name="name">Soil Aggregate Test</field>
+		     <field name="res_model">skit.soil.aggregate</field>
+		     <field name="view_type">form</field>
+		     <field name="view_mode">tree,form</field>
+		     <field name="help" type="html">
+             	<p class="o_view_nocontent_smiling_face">
+                	Create Soil Aggregate Test
+              	</p>
+             </field>
+	    </record>
+    
+		 <menuitem id="skit_soil_aggregate_menu" 
+		 name="Soil Aggregate Test"
+		 parent="skit_main_soil_menu"
+		 sequence="1"
+		 action="soil_aggregate_action"/>
+   </data>
+</odoo>

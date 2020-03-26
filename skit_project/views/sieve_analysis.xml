@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	    <!-- Soil Analysis Test Tree view -->
+		<record id="sieve_analysis_view_tree" model="ir.ui.view">
+			<field name="name">skit.sieve.analysis.tree</field>
+			<field name="model">skit.sieve.analysis</field>
+			<field name="arch" type="xml">
+				<tree string="Sieve Analysis">
+					<field name="name"/>
+					<field name="sievetest_date"></field>
+				    <field name="project_id"></field>
+				    <field name="location_id"></field>
+				    <field name="sample_identify"></field>
+				    <field name="kind_of_material"></field>
+				</tree>
+			</field>
+		</record>
+		  <!-- Soil Analysis Test From view -->
+		<record id="sieve_analysis_form_view" model="ir.ui.view" >
+	        <field name="name">skit.sieve.analysis.form</field>
+	        <field name="model">skit.sieve.analysis</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Sieve Analysis">
+	        		<header>
+					       	<button name="sas_action_submit" string="Submit" class="oe_highlight"
+					       			type="object" attrs="{'invisible': ['|','|',('sieve_line_ids','=',[]),
+					       			('state','not in',['draft'])]}"/>
+					        <button name ="sas_action_confirm" string="Confirm" class="oe_highlight" states="submit" type="object"/>
+					        <button name ="sas_action_verify" string="Verify" class="oe_highlight" states="confirm" type="object"/>
+					        <button name="sas_action_approve" string="Approve" class="oe_highlight" states="verify" type="object"/>
+					        <button name ="sas_action_cancel" states="draft,submit,confirm,verify" string="Cancel"  type="object"/>
+					        <button name="sas_action_reset" states="cancelled" type="object" string="Reset" class="oe_highlight"/>
+					        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,verify,approved" 
+					           	statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+					</header>
+	        		<sheet>
+	        			<h3>SIEVE ANALYSIS / GRADING TEST </h3>
+			              	<div class="oe_title">
+								<group>
+										<h2>
+							            	<field name="name" readonly="1"/>
+							            </h2>
+							            <group>
+							            <field name="sievetest_date" readonly="1"/>
+						            </group>
+					            </group>
+			       			</div>
+		              	 <group>
+		              	 	<field name="project_id" string="Project Name" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		              	 </group>
+		              	 <group> 
+		              		<group>
+		              			<field name="task_id"  invisible="1"/>
+			                    <field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="sample_identify" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                	<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" widget='selection'/>
+			                    <field name="qty_rep" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                    <field name="supplied_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="sample_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                    <field name="submitted_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		                     </group>
+		                     <group>
+			                     <field name="contractor" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+			                     <field name="source"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                     <field name="sample" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" />
+			                     <field name="spec_item_no"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1" />
+			                     <field name="proposed" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+			                     <field name="designation_sampled" />
+			                     <field name="designation_submitted" />
+			                     <field name="date_performed" />
+			                     <field name="date_submit" />
+		                      </group>
+		                 </group>
+			       		 <notebook>
+			       		  <!-- Soil Analysis Tab-->
+				       		<page name="sieve_analysis" string="SIEVE ANALYSIS" >
+					       		<group name="sieve_test" >
+			            			 <field name="sieve_line_ids" nolabel="1" >
+                                      		<tree string="Sieve" editable="bottom"  create="false">
+				            					<field name="sieve_size" readonly="1"/>
+				            					<field name="wt_retained"/>
+				            					<field name="percent_of_retained"/>
+				            					<field name="percent_of_passing"/>
+				            					<field name="specification" readonly="1"/>
+				            				</tree>
+				            			</field>
+				            		</group>
+					       		 <group>
+						       		 <group>
+							       		 <field name="weight_after_wash" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		 <field name="oven_dry_weight" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		 <field name="original_weight_wet" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+							       		 <field name="wash_loss" readonly="1" />
+							       		 <field name="moisture_content" readonly="1"/>
+						       		 </group>
+					       		 </group>
+	 			       		</page> 
+	 			       		 <!-- Other Info Tab -->
+	 			       		<page name="other_info" string="OTHER INFO" >
+		 			       		<group>
+				            		<group>
+				            			<field name="tested_by"/>
+				            			<field name="checked_by"/>
+				            		</group>
+				            		<group>
+				            			<field name="tested_date"/>
+				            			<field name="checked_date" />
+				            		</group>
+			            			<group>
+				            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+				            			<field name="attested_by"/>
+				            		</group>
+				            		<group>
+				            			<field name="witnessed_date" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+				            			<field name="attested_date"/>
+				            		</group>
+			            		</group>
+				       		</page>
+			       		</notebook> 
+	       		 	</sheet>
+	    		 </form>
+	         </field>
+		</record>
+		 <!-- Soil Analysis Test Action -->
+	   	<record id="skit_sieve_analysis_action"  model="ir.actions.act_window" >
+		     <field name="name">Sieve Analysis Test</field>
+		     <field name="res_model">skit.sieve.analysis</field>
+		     <field name="view_type">form</field>
+		     <field name="view_mode">tree,form</field>
+		     <field name="help" type="html">
+             	<p class="o_view_nocontent_smiling_face">
+                	Create Sieve Analysis of Soil Aggregation
+              	</p>
+             </field>
+	    </record>
+	     <!-- Soil Analysis Test Menu -->
+	     <menuitem id="skit_sieve_analysis_menu" 
+	     name="Sieve Analysis Test"
+	   	 parent="skit_main_soil_menu" 
+	   	 sequence="3" 
+	   	 action="skit_sieve_analysis_action"/>
+   </data>
+</odoo>
