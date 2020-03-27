@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Soil Penetration Tree View -->
+		<record id="soil_penetration_view_tree" model="ir.ui.view">
+			<field name="name">skit.soil.penetration.tree</field>
+			<field name="model">skit.soil.penetration</field>
+			<field name="arch" type="xml">
+				<tree string="Soil Penetration">
+					<field name="name"/>
+					<field name="penetration_test_date"></field>
+				    <field name="project_id"></field>
+				    <field name="location_id"></field>
+				    <field name="sample_identify"></field>
+				    <field name="kind_of_material"></field>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Soil Penetration Form View -->
+		<record id="soil_penetration_view_form" model="ir.ui.view">
+				<field name="name">skit.soil.penetration.form</field>
+				<field name="model">skit.soil.penetration</field>
+				<field name="arch" type="xml">
+					<form string="Soil Penetration">
+						<header>
+					       	<button name="pt_action_submit" string="Submit" class="oe_highlight"
+					       			type="object" attrs="{'invisible': ['|','|','|',('penetration_line_blow10_ids','=',[]),
+					       			('penetration_line_blow30_ids','=',[]),('penetration_line_blow65_ids','=',[]),
+					       			('state','not in',['draft'])]}"/>
+					       	<button name ="pt_action_confirm" string="Confirm" class="oe_highlight" states="submit" type="object"/>
+					        <button name ="pt_action_verify" string="Verify" class="oe_highlight" states="confirm" type="object"/>
+					        <button name="pt_action_approve" string="Approve" class="oe_highlight" states="verify" type="object"/>
+					        <button name ="pt_action_cancel" states="draft,submit,confirm,verify" string="Cancel"  type="object"/>
+					        <button name="pt_action_draft" states="cancelled" type="object" string="Reset" class="oe_highlight"/>
+					        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,verify,approved" 
+					           	statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+					    </header>
+						<sheet>
+							<h3>SOIL PENETRATION TEST </h3>
+			              	<div class="oe_title">
+								<group>
+										<h2>
+							            	<field name="name" readonly="1"/>
+							            </h2>
+							            <group>
+							            <field name="penetration_test_date" readonly="1"/>
+						            </group>
+					            </group>
+			       			</div>
+				          	<group>
+		              	 		<field name="project_id" string="Project Name" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		              	    </group>
+		              	    <group>
+				            	<group>
+				            		<field name="task_id" invisible="1"/>
+				            		<field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sample_identify"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required ="1" />
+				            		<field name="qty_rep" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" />
+				            		<field name="supplied_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sampled_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="submitted_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				           		</group>
+				           		<group>
+				                     <field name="contractor" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                     <field name="original_source"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="supplied_at" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" />
+				                     <field name="spec_item_no" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                     <field name="proposed_use" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="designation_sampled" readonly="1"/>
+				                     <field name="designation_submitted" readonly="1" />
+				                     <field name="date_performed" readonly="1" />
+				                     <field name="date_submit"  readonly="1" />
+		                      </group>
+		                      <group>
+		                      		<field name="mdd" />
+		                      		<field name="omc" />
+		                      		<field name="cbr_100_per" />
+		                      		<field name="cbr_99_per" />
+		                      		<field name="swell" />
+		                      </group>
+		                      <group>
+				            		<field name="penetration_line_graph" widget="kanban_line_graph" nolabel="1"/>
+				            	</group>
+				            </group>
+				            <notebook>
+				           <!--  10 Blows tab -->
+				            	<page  name="10 blow" string="10 Blows">
+				            	 <group string="No. of Blows : 10 Blows  MX-24"></group>
+				            	<group> 
+				            		<group string="Density and Moisture Content Determination ">
+						            		<field name="wt_of_cylindersoil_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_cylinder_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_soil_10"/>
+						            		<field name="wet_density_10"/>
+						            		<field name="can_number_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_can_wet_soil_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_can_dry_soil_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="moisture_loss_10"/>
+						            		<field name="wt_of_can_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_dry_soil_10"/>
+						            		<field name="moisture_content_10"/>
+						            		<field name="dry_density_10"/>
+						            		<field name="vol_of_cylinder_10" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		</group> 
+				            		<group string=" California Bearing Ratio" >
+				            			<div>
+				            				<table  class="tbl_header tbl_for_soil_penetration">
+            									<thead>
+            										<tr>
+            											<th colspan="3">CALIFORIA BEARING RATIO</th>
+            										</tr>
+                									<tr> 
+									                    <th width="8" >Penetration</th>
+									                    <th width="115">Load (kg/cm^2)</th>
+									                    <th width="150">Standard</th>
+									                </tr>
+ 								            	</thead>
+								        	</table>
+				            				<field name="penetration_line_blow10_ids"  nolabel="1" >
+				            					<tree string="Penetration" editable = "bottom" create="1" class="penetration_soil" >
+					            					<field name="penetration" />
+					            					<field name="load_tlr" />
+					            					<field name="load_load" />
+					            					<field name="std_std" />
+					            					<field name="std_cbr" />
+				            					</tree>
+				            				</field>	
+			            				</div>
+			            			</group>
+			            		</group>
+			            	</page>
+			            	<!-- 30 Blows Tab -->
+			            	<page string="30 Blows" >
+			            		<group string="No. of Blows : 30 Blows M-14 "></group>
+				            	<group>
+				            		<group string="Density and Moisture Content Determination ">
+						            		<field name="wt_of_cylindersoil_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_cylinder_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_soil_30"/>
+						            		<field name="wet_density_30"/>
+						            		<field name="can_number_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_can_wet_soil_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_can_dry_soil_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="moisture_loss_30"/>
+						            		<field name="wt_of_can_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+						            		<field name="wt_of_dry_soil_30"/>
+						            		<field name="moisture_content_30"/>
+						            		<field name="dry_density_30"/>
+						            		<field name="vol_of_cylinder_30" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		</group> 
+				            		<group name="penete"  string=" California Bearing Ratio" >
+				            			<div>
+				            				<table  class="tbl_header tbl_for_soil_penetration">
+            									<thead>
+            										<tr>
+            											<th colspan="3">CALIFORIA BEARING RATIO</th>
+            										</tr>
+                									<tr> 
+									                    <th width="8" >Penetration</th>
+									                    <th width="115">Load (kg/cm^2)</th>
+									                    <th width="150">Standard</th>
+									                </tr>
+ 								            	</thead>
+								        	</table>
+				            				<field name="penetration_line_blow30_ids"  nolabel="1" >
+				            					<tree string="Penetration" editable = "bottom" create="1"  >
+					            					<field name="penetration"/>
+					            					<field name="load_tlr"/>
+					            					<field name="load_load"/>
+					            					<field name="std_std"/>
+					            					<field name="std_cbr"/>
+					            				</tree>
+					            			</field>
+				            			</div>
+				            		</group>
+			            		</group>
+		            		</page>
+				            <!-- 65 Blows Tab -->
+				            <page string="65 Blows">
+				            <group string="No. of Blows : 65 Blows  AJ-05"></group>
+				            	<group>
+				            		<group string="Density and Moisture Content Determination">
+					            		<field name="wt_of_cylindersoil_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            		<field name="wt_of_cylinder_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            		<field name="wt_of_soil_65"/>
+					            		<field name="wet_density_65"/>
+					            		<field name="can_number_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            		<field name="wt_of_can_wet_soil_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            		<field name="wt_of_can_dry_soil_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            		<field name="moisture_loss_65"/>
+					            		<field name="wt_of_can_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            		<field name="wt_of_dry_soil_65"/>
+					            		<field name="moisture_content_65"/>
+					            		<field name="dry_density_65"/>
+					            		<field name="vol_of_cylinder_65" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		</group> 
+				            		<group name="penete"  string=" California Bearing Ratio"  >
+				            			<div>
+				            				<table  class="tbl_header tbl_for_soil_penetration">
+            									<thead>
+            										<tr>
+            											<th colspan="3">CALIFORIA BEARING RATIO</th>
+            										</tr>
+                									<tr> 
+									                    <th width="8" >Penetration</th>
+									                    <th width="115">Load (kg/cm^2)</th>
+									                    <th width="150">Standard</th>
+									                </tr>
+ 								            	</thead>
+								       		 </table>
+				            				 <field name="penetration_line_blow65_ids"  nolabel="1" >
+				            				 	<tree string="Penetration" editable = "bottom" create="1"  >
+					            					<field name="penetration"/>
+					            					<field name="load_tlr"/>
+					            					<field name="load_load"/>
+					            					<field name="std_std"/>
+					            					<field name="std_cbr"/>
+					            				</tree>
+					            			</field>
+				            			</div>
+				            		</group>
+		            			</group>
+	            			</page>
+			            	<!-- Other info Tab -->
+			            	<page string="OTHER INFO">
+				            	<group>
+				            		<group>
+				            			<field name="tested_by"/>
+				            			<field name="checked_by"/>
+				            		</group>
+				            		<group>
+				            			<field name="tested_date"/>
+				            			<field name="checked_date" />
+				            		</group>
+			            			<group>
+				            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+				            			<field name="attested_by"/>
+				            		</group>
+				            		<group>
+				            			<field name="witnessed_date" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+				            			<field name="attested_date"/>
+				            		</group>
+			            		</group>
+			            	</page>
+				            	
+			            </notebook>
+			         </sheet>
+				</form>
+			</field>
+		</record>
+		<!-- Soil Penetration Test Action -->
+   		<record id="skit_soil_penetration_action" model="ir.actions.act_window">
+	        <field name="name">Soil Penetration Test</field>
+	        <field name="res_model">skit.soil.penetration</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+	        <field name="help" type="html">
+            	<p class="o_view_nocontent_smiling_face">
+               	Create Soil Penetration Test
+             	</p>
+            </field>
+   		</record>
+   		
+   		<!-- Soil Penetration Test Menu -->
+		     <menuitem id="skit_soil_penetration_menu" name="Soil Penetration Test"
+		     	parent="skit_main_soil_menu" sequence="5" action="skit_soil_penetration_action"/>
+	</data>
+</odoo>

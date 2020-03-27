@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="sieve_soil_aggregate_tree_view" model="ir.ui.view">
+			<field name="name">skit.soil.aggregate.specification.tree</field>
+			<field name="model">skit.soil.aggregate.specification</field>
+			<field name="arch" type="xml">
+				<tree string="Sieve Analysis config">
+					<field name="kind_of_material"/>
+					<field name="name"/>
+					<field name="grading"></field>
+				    <field name="sieve_size"></field>
+				    <field name="max_value_range"></field>
+				    <field name="min_value_range"></field>
+				    <field name="liquid_limit"></field>
+				    <field name="plasticity_index"></field>
+				    <field name="abrasion"></field>
+				    <field name="fractural_face"></field>
+				    <field name="cbr" ></field>
+				    <field name="astm"></field>
+				   
+				</tree>
+			</field>
+		</record>
+		<record id="sieve_soil_aggregate_form_view" model="ir.ui.view" >
+	        <field name="name">skit.soil.aggregate.specification.form</field>
+	        <field name="model">skit.soil.aggregate.specification</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Sieve Analysis config">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="kind_of_material"/>
+				        		<field name="name"/>
+								<field name="grading"/>
+								</group>
+								<group>
+							    <field name="sieve_size"/>
+							    <h3>Value Range</h3>
+							    <field name="max_value_range" string="Max"/>
+							    <field name="min_value_range" string="Min"/>
+						    </group>
+						    <group>
+						        <field name="liquid_limit"></field>
+						     	<field name="plasticity_index"></field>
+						      	<field name="abrasion"></field>
+						      	<field name="fractural_face"></field>
+						      	<field name="cbr"></field>
+						       	<field name="astm"></field>
+						     </group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		<record id="skit_sieve_soil_aggregate_action"  model="ir.actions.act_window" >
+		     <field name="name">Soil Aggregate Specification </field>
+		     <field name="res_model">skit.soil.aggregate.specification</field>
+		     <field name="view_type">form</field>
+		     <field name="view_mode">tree,form</field>
+		     <field name="help" type="html">
+              	<p class="o_view_nocontent_smiling_face">
+                	Create Soil Aggregate Specification
+              	</p>
+             </field>
+	    </record>
+	    <record id="skit_soil_coarse_fine_aggregate_tree_view" model="ir.ui.view">
+			<field name="name">skit.soil.coarse.fine.aggregate.tree</field>
+			<field name="model">skit.soil.coarse.fine.aggregate</field>
+			<field name="arch" type="xml">
+				<tree string="Sieve Analysis config2">
+					<field name="name"/>
+					<field name="spec_item_no"/>
+					<field name="grading"></field>
+				    <field name="sieve_size"></field>
+				    <field name="max_value_range"></field>
+				    <field name="min_value_range"></field>
+				    <field name="soundness"></field>
+				    <field name="abrasion"></field>
+				    <field name="wash_loss"></field>
+				    <field name="clay_lumps"></field>
+				    
+				</tree>
+			</field>
+		</record>
+		<record id="skit_soil_coarse_fine_aggregate_form_view" model="ir.ui.view" >
+	        <field name="name">skit.soil.coarse.fine.aggregate.form</field>
+	        <field name="model">skit.soil.coarse.fine.aggregate</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Sieve Analysis config2">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+				        		<field name="spec_item_no"/>
+								<field name="grading"/>
+								</group>
+								<group>
+							    <h3>Value Range</h3>
+							    <field name="max_value_range" string="Max"/>
+							    <field name="min_value_range" string="Min"/>
+							    <field name="sieve_size" />
+						    </group>
+						    <group>
+						        <field name="soundness"></field>
+							    <field name="abrasion"></field>
+							    <field name="wash_loss"></field>
+							    <field name="clay_lumps"></field>
+						    </group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		<record id="skit_soil_coarse_fine_aggregate_action"  model="ir.actions.act_window" >
+		     <field name="name"> Soil  Coarse and Fine Aggregates </field>
+		     <field name="res_model">skit.soil.coarse.fine.aggregate</field>
+		     <field name="view_type">form</field>
+		     <field name="view_mode">tree,form</field>
+		     <field name="help" type="html">
+              	<p class="o_view_nocontent_smiling_face">
+                	Create Soil Coarse Fine Aggregate Specification
+              	</p>
+             </field>
+	    </record>
+		<menuitem id="skit_sieve_analysis_config_menu" 
+	     name="Sieve Analysis Configuration"
+	   	 parent="project.menu_project_config" 
+	   	 sequence="0"/>
+   	 
+	   	 <menuitem id="skit_sieve_soil_aggregate_menu" 
+	     name="Soil Aggregate Specification "
+	   	 parent="skit_sieve_analysis_config_menu" 
+	   	 sequence="0" 
+	   	 action="skit_sieve_soil_aggregate_action"/>
+	   	 
+	   	 <menuitem id="skit_sieve_soil_coarse_menu" 
+	     name="Soil Coarse and Fine Aggregate "
+	   	 parent="skit_sieve_analysis_config_menu" 
+	   	 sequence="100" 
+	   	 action="skit_soil_coarse_fine_aggregate_action"/>
+	</data>
+</odoo>

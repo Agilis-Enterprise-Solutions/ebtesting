@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Tree view for Config Branch -->
+		<record id="skit_config_branch_tree_view" model="ir.ui.view">
+			<field name="name">config.branch.tree</field>
+			<field name="model">config.branch</field>
+			<field name="arch" type="xml">
+				<tree string="Branch">
+					<field name="name"/>
+					<field name ="branch_code"/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view for Config Branch -->
+		<record id="skit_config_branch_form_view" model="ir.ui.view" >
+	        <field name="name">config.branch.form</field>
+	        <field name="model">config.branch</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Branch">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+				        		<field name="branch_code"/>
+							</group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		
+		<!-- Config Branch Action -->
+   		<record id="skit_branch_action" model="ir.actions.act_window">
+		        <field name="name">Branch</field>
+		        <field name="res_model">config.branch</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree,form</field>
+		        <field name="help" type="html">
+		        	<p class="o_view_nocontent_smiling_face">
+                		Create New Branch
+                	</p>
+                </field>
+    		</record>
+    		
+   		<!--  Branch Menu -->
+   		<menuitem id="menu_branch" action="skit_branch_action" 
+    		name="Branch" parent="project.menu_project_config" sequence="11"/>
+
+   		<record id="skit_product_pricelist_form_inherit" model="ir.ui.view">
+            <field name="name">product.pricelist.form</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form/sheet//div[2]" position="after">
+            		<label for="branch_id"/>
+            		<field name="branch_id"/>
+                </xpath>
+            </field>
+        </record>
+         <!-- Form view for location -->
+		<record id="skit_location_form_view" model="ir.ui.view" >
+	        <field name="name">skit.location.form</field>
+	        <field name="model">skit.location</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string="Location">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+							</group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+	</data>
+</odoo>

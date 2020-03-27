@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Tree view for Config Kind Of Material -->
+		<record id="skit_kind_of_material_tree_view" model="ir.ui.view">
+			<field name="name">config.material.tree</field>
+			<field name="model">config.material</field>
+			<field name="arch" type="xml">
+				<tree string="Kind of Material">
+					<field name="name"/>
+					<field name ="spec_item_no"/>
+					<field name ="grading" widget="many2many_tags" />
+					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form view for Config Kind Of Material-->
+		<record id="skit_kind_of_material_form_view" model="ir.ui.view" >
+	        <field name="name">config.material.form</field>
+	        <field name="model">config.material</field>
+	        <field name="priority" eval="8" />
+	        <field name="arch" type="xml">
+	        	<form string= "Kind of Material">
+	        		<sheet>
+	        			<group>
+	        				<group>
+				        		<field name="name"/>
+				        		<field name="spec_item_no"/>
+				        		<field name ="grading" widget="many2many_tags" />
+							</group>
+					    </group>
+        			</sheet>
+       			</form>
+   			</field>
+		</record>
+		
+		<!-- Config Kind Of Material Action -->
+   		<record id="skit_kind_of_material_action" model="ir.actions.act_window">
+		        <field name="name">Kind of Material</field>
+		        <field name="res_model">config.material</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree,form</field>
+		        <field name="help" type="html">
+		        	<p class="o_view_nocontent_smiling_face">
+                		Create New Kind of material
+                	</p>
+                </field>
+    		</record>
+    		
+   		<!--   Kind Of Material Menu -->
+   		<menuitem id="menu_kind_od_material" action="skit_kind_of_material_action" 
+    		name="Kind Of Material" parent="project.menu_project_config" sequence="12"/>
+    		
+    		</data>
+    		</odoo>
+    		

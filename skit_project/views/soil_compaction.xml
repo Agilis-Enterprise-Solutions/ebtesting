@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Soil Compaction Tree View -->
+		<record id="soil_compaction_view_tree" model="ir.ui.view">
+			<field name="name">skit.soil.compaction.tree</field>
+			<field name="model">skit.soil.compaction</field>
+			<field name="arch" type="xml">
+				<tree string="Soil Compaction">
+					<field name="name"/>
+					<field name="campact_test_date"></field>
+				    <field name="project_id"></field>
+				    <field name="location_id"></field>
+				    <field name="sample_identify"></field>
+				    <field name="kind_of_material"></field>
+				    <field name="test_date"></field>
+				</tree>
+			</field>
+		</record>
+		<!-- Soil Compaction Form View -->
+		<record id="soil_compaction_view_form" model="ir.ui.view">
+				<field name="name">skit.soil.compaction.form</field>
+				<field name="model">skit.soil.compaction</field>
+				<field name="arch" type="xml">
+					<form string="Soil Compaction">
+						<header>
+					       	<button name="sc_action_submit" string="Submit" class="oe_highlight"
+					       			type="object" attrs="{'invisible': ['|','|',('moisture_content_ids','=',[]),
+					       			('density_ids','=',[]),('state','not in',['draft'])]}"/>
+					       	<button name ="sc_action_confirm" string="Confirm" class="oe_highlight" states="submit" type="object"/>
+					        <button name ="sc_action_verify" string="Verify" class="oe_highlight" states="confirm" type="object"/>
+					        <button name="sc_action_approve" string="Approve" class="oe_highlight" states="verify" type="object"/>
+					        <button name ="sc_action_cancel" states="draft,confirm,verify" string="Cancel"  type="object"/>
+					        <button name="sc_action_draft" states="cancelled" type="object" string="Reset" class="oe_highlight"/>
+					        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,verify,approved" 
+					           	statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+					    </header>
+						<sheet>
+							<p><h3>SOIL COMPACTION TEST</h3></p>
+							<div class="oe_title">
+								<group>
+										<h2>
+							            	<field name="name" readonly="1"/>
+							            </h2>
+							            <group>
+							            <field name="campact_test_date" readonly="1"/>
+						            </group>
+					            </group>
+					       	</div>
+					       	<group>
+		              	 		<field name="project_id" string="Project Name" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		              	 	</group>
+				            <group>
+				            	<group>
+				            		<field name="task_id"  invisible="1"/>
+				            		<field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sample_identify" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="test_date" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sampled_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="submitted_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				           		</group>
+				           		<group>
+				           			<field name="contractor" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				           			<field name="original_source" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				           			<field name="tec_tested_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				           			<field name="spec_item_no" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                    <field name="designation_sampled" />
+				                    <field name="designation_submitted"/>
+				                    <field name="date_performed" />
+				                    <field name="date_submit" />
+				           		</group>
+				            </group>
+				            <group>
+				            	<group>
+					            	<field name="aashto" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+					            	<field name="method_used" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+					            	<field name="weight_of_rammer" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="no_of_layer" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="blow_of_layer" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="weight_of_mold" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="volume_of_mold" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="max_dry_density" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="optimum_moisture_content" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            	</group> 
+				            	<group>
+				            		<t t-name="ProjectBodyBarGraph">
+		                 				<field name="compaction_parabolic_graph" widget="kanban_parabolic_graph"/>
+		            				</t>
+				            	</group>
+				            </group>
+				           
+				            <notebook>
+				            	<!-- Moisture content and Density -->
+				            	<page string="MOISTURE CONTENT &amp; DENSITY">
+				            		<group name="moisture_content" string="MOISTURE CONTENT (%)">
+				            			<field name="moisture_content_ids" nolabel="1">
+				            				<tree string="Moisture" editable = "true" >
+				            					<field name="determination_no"/>
+				            					<field name="moisture_can_no"/>
+				            					<field name="wt_of_can_wetsoil"/>
+				            					<field name="wt_of_can_drysoil"/>
+				            					<field name="wt_of_water"/>
+				            					<field name="wt_of_can"/>
+				            					<field name="wt_of_drysoil"/>
+				            					<field name="moisture_content"/>
+				            				</tree>
+				            			</field>
+				            		</group>
+				            		<group name="density" string="Density">
+				            			<field name="density_ids" nolabel="1">
+				            				<tree string="Density" editable="bottom">
+				            					<field name="determination_no"/>
+				            					<field name="moisture_can_no"/>
+				            					<field name="wt_of_mold_soil"/>
+				            					<field name="wt_of_mold"/>
+				            					<field name="wt_of_compactsoil"/>
+				            					<field name="wet_density"/>
+				            					<field name="dry_density"/>
+				            				</tree>
+				            			</field>
+				            		</group>
+				            	</page>
+				            	<!-- Other info Tab -->
+				            	<page string="OTHER INFO">
+					            	<group>
+					            		<group>
+					            			<field name="tested_by"/>
+					            			<field name="checked_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="tested_date"/>
+					            			<field name="checked_date" />
+					            		</group>
+				            			<group>
+					            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="witnessed_date" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_date"/>
+					            		</group>
+				            		</group>
+				            	</page>
+				            </notebook>
+				         </sheet>
+					</form>
+				</field>
+			</record>
+			
+			<!-- Soil Compaction Test Action -->
+    		<record id="skit_soil_compact_action" model="ir.actions.act_window">
+		        <field name="name">Soil Compaction Test</field>
+		        <field name="res_model">skit.soil.compaction</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree,form</field>
+		        <field name="help" type="html">
+		        	<p class="o_view_nocontent_smiling_face">
+                		Create Soil Compaction Test
+                	</p>
+                </field>
+    		</record>
+    		
+    		<!-- Soil Compaction Test Menu -->
+		     <menuitem id="skit_soil_compact_menu" name="Soil Compaction Test"
+		     	parent="skit_main_soil_menu" sequence="1" action="skit_soil_compact_action"/>
+		     	
+	</data>
+</odoo>

@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="report_soil_compaction_document">
+			<t t-call="web.html_container">
+				<t t-call="web.html_container">
+					<t t-call="web.internal_layout">
+						<div class="page" style="font-size:20px !important;">
+							<link rel="stylesheet" type="text/css" href="/web/static/lib/nvd3/nv.d3.css"/>
+             				<script src="https://d3js.org/d3.v3.min.js"></script>
+							<t t-if="docs">
+		 						<td class="header">
+							 		<h4 class='text-center'>REPORT FOR SOIL COMPACTION TEST </h4>
+							 	 	<h5 class = "text-right" >Date: <t t-esc="docs.campact_test_date" /></h5>
+							 	 	<h5 class = "text-right" >Lab No. : <t t-esc="docs.name" /></h5>
+		       						<div width="100%">
+								 		<table class="float-left " style="width:100% !important;">
+								 	 		<thead>
+								 	 			<tr>
+					                               <td><strong>Name of  Project :</strong></td>
+					                               <td><strong t-esc="docs.project_id.name" /></td>
+			                           			</tr>
+			                           		</thead>
+			                           	</table>
+									</div>
+			                       	<div width= "100%">
+			                        	<table class="float-left " style="width:50% !important;">
+			                            	<thead>
+			                             		<tr>
+			                               			<td>Location:</td>
+			                               			<td class='text-left' t-esc="docs.location_id.name" />
+			                           			</tr>
+					                           <tr>
+					                               <td><span>Contractor:</span></td>
+					                               <td><span t-esc="docs.contractor.name" /></td>
+					                           </tr>
+					                            <tr>
+					                               <td><span>Kind of Material:</span></td>
+					                               <td><span t-esc="docs.kind_of_material.name" /></td>
+					                           </tr>
+					                            <tr>
+					                               <td>Source :</td>
+					                               <td><span t-esc="docs.original_source"/></td>
+					                           </tr>
+					                            <tr>
+					                               <td>Date Tested:</td>
+					                               <td t-esc="docs.tested_date" />
+					                            </tr>
+			                           		</thead>
+			                      	 	</table>
+				                       <table class="float-left " style="width:50% !important;">
+				                            <thead>
+					                            <tr>
+					                             	<td><span>Sampled By: </span></td>
+					                               	<td><span t-esc="docs.sampled_by.name" /></td>
+					                           </tr>
+					                           <tr>
+					                               <td><span>Submitted_by:</span></td>
+					                               <td><span t-esc="docs.submitted_by.name" /></td>
+					                           </tr>
+					                            <tr>
+					                               <td>Date Submitted:</td>
+					                               <td><span t-esc="docs.date_submit"/></td>
+					                           </tr>
+					                           <tr>
+					                             	<td>Tested By :</td>
+					                             	<td t-esc="docs.tested_by.name" />
+					                           </tr>
+					                           <tr>
+					                               <td> Spec's Item No :</td>
+		                               			   <td t-esc="docs.spec_item_no"/>
+		                         				</tr>
+				                           	</thead>
+				                		</table>
+                   					</div>
+		 							<div width="100%">
+		 	 							<h4 class="text-center"> MOISTURE CONTENT, %</h4> 
+										<table class="table" style="width:100% !important;">
+											<tbody>
+												<tr class="highlight overlap">
+													<td class="text-left">Determination No.</td>
+													<t t-foreach="docs_line" t-as="order">
+														<td>
+															<span>
+																<t t-esc="order['determination_no']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Moisture Can No.</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="order['moisture_can_no']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Wt. of Can + Wet of Soil, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="order['wt_of_can_wetsoil']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Wt. of Can + Dry Soil,   gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+														 <td>
+															<span>
+																<t t-esc="order['wt_of_can_drysoil']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Weight of Water, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="order['wt_of_water']"  t-options='{"widget": "float", "precision": 2}' />
+															</span>
+														</td>
+													</t>
+												</tr>
+											    <tr>
+													<td class="text-left" >Wt. of Can, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+														 <td>
+															<span>
+																<t t-esc="order['wt_of_can']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Wt. of Dry Soil, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+														 <td>
+															<span>
+																<t t-esc="order['wt_of_drysoil']"   t-options='{"widget": "float", "precision": 2}'/>
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Moisture content  %</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="(order['moisture_content'])"  t-options='{"widget": "float", "precision": 2}' />
+															</span>
+														</td>
+													</t>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								 	<hr></hr>
+								 	<h4 class="text-center">DENSITY</h4>	
+									<table class="table table-condensed">
+										<tbody>
+											<tr class="highlight overlap">
+												<td class="text-left">Determination No.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['determination_no']" />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wt. of Mold + Soil, gms.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													 <td>
+														<span>
+															<t t-esc="order['wt_of_mold_soil']" />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wt. of Mold, gms.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['wt_of_mold']" />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wt. of Compacted Soil, gms.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['wt_of_compactsoil']" t-options='{"widget": "float", "precision": 2}' />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wet Density, gm/cc.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['wet_density']"  t-options='{"widget": "float", "precision": 3}'/>
+														</span>
+													</td>
+												</t>
+											</tr>
+										    <tr>
+												<td class="text-left" >Dry density,  gm/cc</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['dry_density']" t-options='{"widget": "float", "precision": 3}'/>
+														</span>
+													</td>
+												</t>
+											</tr>
+										</tbody>
+									</table>
+									<hr></hr>
+		 							<br/>
+								 	<div width="100%">
+								 		<table class="table float-left" style="width:50% !important;">
+				                            <tr>
+				                            	<td><span>AASHTO: </span> </td>
+				                           	 	<td><span t-esc="docs.aashto" /></td>
+				                            </tr>
+				                            <tr>
+					                            <td><span>Weight of Rammer </span> </td>
+					                            <td><span t-esc="docs.weight_of_rammer" /></td>
+				                           </tr>
+				                            <tr>
+					                            <td><span>No. of Layers </span> </td>
+					                            <td><span t-esc="docs.no_of_layer" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Blows/Layer </span> </td>
+					                            <td><span t-esc="docs.blow_of_layer" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Weight of mold, gm. </span> </td>
+					                            <td><span t-esc="docs.weight_of_mold" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Volume of mold, cc </span> </td>
+					                            <td><span t-esc="docs.volume_of_mold" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Maximum Dry Density, gm/cc: </span>
+					                            <strong>MDD</strong> </td>
+					                            <td><span t-esc="docs.max_dry_density" /></td>
+				                            </tr>
+				                            <tr>
+					                            <td><span>Optimum Moisture content,%</span>
+					                            <strong>OMC</strong></td>
+					                            <td> <span t-esc="docs.optimum_moisture_content  " /></td>
+				                            </tr>
+								 	</table>
+		 	 						<div  style="width:50%; display:inline-block;float:right;" >
+			 	 						<t t-if="len(graph)>=1">
+				                        	<table class="table float-right" style="width:100%!important; display:inline-block;">
+				                            	<div id="progress" style="display:none"><t t-esc="graph" /></div>
+				                             	<div  class="svg-wrapper" id="line_graph" style="width:100%;height:400px;display: inline-block;border: 1px solid;margin-top: 1%;" > 
+	                    	                		<h5 style="text-align: center;margin-top:3%;margin-bottom: 10%;">Maximum Dry Density=<t t-esc="docs.max_dry_density"  t-options='{"widget": "float", "precision": 3}'/> </h5>
+	                    	                 		<svg id="line_graph_svg" width="390" height="300"/>
+	                                          	</div>
+				                          	</table> 
+				                          </t>
+				                          <t t-else="" >
+			                          		<table class="table float-right" style="width:100%!important; display:inline-block;">
+			                           			<div  class="svg-wrapper" id="line_graph" style="width:100%;height:400px;display: inline-block;border: 1px solid;margin-top: 1%;" >
+			                           			<h3 style="text-align: center; margin-top:35%; "> No Data Available </h3> 
+			                           			</div>
+			                           		</table>
+			                          </t>
+			                     	</div>
+		 	                  	</div>
+				 	           	<div  style ="width:100%; display:inline-block;float:right;">
+									<table class="float-left"  style="width:45% !important;border: 1px solid black;"> 
+		                          		<tr style= "border: 1px solid black;">
+			                            	<td><h5><strong>Tested By:</strong></h5> <br/>
+			                               		<span style="margin-left:15%;"><t t-esc="docs.tested_by.name" /></span>
+			                               	</td>
+			                            </tr>
+			                            <tr>
+			                            	<td> <h5><strong>Checked By:</strong></h5> <br/> 
+			                               		<span style="margin-left:15%;"><t t-esc="docs.checked_by.name"/></span>
+			                               </td>
+		                               </tr> 
+		                           	</table>
+	                             	<table  class="float-left"  style="width:45% !important;border: 1px solid black;" >  
+		                                <tr style= "border: 1px solid black;">
+				                        	<td> <h5><strong>Witnessed By:</strong></h5> <br/>
+				                           		<span style="margin-left:20%;"><t t-esc="docs.witnessed_by.name"/></span>
+				                           	</td>
+				                        </tr>
+			                         	<tr> 
+			                           		<td> <h5><strong>Attested By : </strong></h5> <br/>
+			                           			<span style="margin-left:20%;"><t t-esc="docs.attested_by.name"/> </span>
+			                            	</td>
+	                                	</tr>
+	                            	</table> 
+	                        	</div>
+                           
+ <style>	                            
+       svg {
+		    overflow: hidden;
+		    vertical-align: middle;
+		    display: block;
+		    margin: auto;
+		}  
+		 .chart_legend{
+			width: 80%;
+		    display: inline-block;
+		    margin-left: 10%;
+		    margin-right: 10%;
+		}      
+		#line_graph path { 
+		    stroke-width: 2;
+		    fill: none;
+		    stroke-linejoin: round;
+		    stroke-linecap: round;
+		}
+		#line_graph circle { 
+		  stroke-width: 2;
+		  fill: rgb(1,16,47)
+		}
+		#line_graph .axis path,
+		#line_graph .axis line {
+		  fill: none;
+		  stroke: rgba(128,135,150, 0.6);
+		  stroke-width: 1;
+		  shape-rendering: crispEdges;
+		}
+		
+		#line_graph .axis text {
+		  fill: #999;
+		  font-size: .8rem;
+		}
+</style>
+  
+<script  type="text/javascript">
+   
+// Draw a line chart
+var svg = d3.select('svg'),
+  margin =  {top: 40, right: 20, bottom: 80, left: 60};
+  width = +svg.attr('width') - margin.left - margin.right,
+  height = +svg.attr('height') - margin.top - margin.bottom,
+  g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+var div = d3.select(".svg-wrapper").append("div").attr("class", "toolTip");
+
+// Set the X scale
+var x = d3.scale.linear().range([0, width]);
+
+// Set the Y scale
+var y = d3.scale.linear().range([height, 0]);
+
+// Set the color scale
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+.scale(x)
+
+var yAxis = d3.svg.axis()
+.scale(y)
+.orient("left");
+
+var line = d3.svg.line()
+.interpolate("cardinal")
+.x(function(d) {
+  return x(d.label);
+})
+.y(function(d) {
+  return y(d.attackType);
+});
+  
+// load the data
+var data = JSON.parse((document.getElementById("progress").innerHTML).replace(/'/g, '"'))
+ 
+// Select the important columns
+color.domain(d3.keys(data[0]).filter(function(key) {
+     return key !== "labels";
+}));
+// Correct the types
+data.forEach(function(d) {
+  d.label =(d.labels);
+});
+var attackTypes = color.domain().map(function(name) {
+  return {
+    name: name,
+    values: data.map(function(d) {
+      return {
+        label: d.label,
+        attackType: +d[name]
+      };
+    })
+  };
+});
+// Set the X domain
+x.domain(d3.extent(data, function(d) {
+  return d.label;
+}));
+// Set the Y domain
+  y.domain([
+    d3.min(attackTypes, function(c) {
+      return d3.min(c.values, function(v) {
+        return v.attackType;
+      });
+    }),
+    d3.max(attackTypes, function(c) {
+      return d3.max(c.values, function(v) {
+        return v.attackType;
+      });
+    })
+  ]);
+  
+// Set the X axis
+g.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis);
+  
+// Set the Y axis
+g.append("g")
+  .attr("class", "y axis")
+  .call(yAxis)
+
+
+// text label for the x axis
+g.append("text")             
+    .attr("transform",
+          "translate(" + (width/2) + " ," + 
+                         (height + margin.top + 20) + ")")
+    .style("text-anchor", "middle")
+    .text(data[0].xaxis);
+    
+ g.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("DRY DENSITY (g/cc)");  
+
+ // Draw the lines
+ var attacker = g.selectAll(".attacker")
+   .data(attackTypes)
+   .enter().append("g")
+   .attr("class", "attacker");
+
+ attacker.append("path")
+   .attr("class", "line")
+   .attr("d", function(d) {
+     return line(d.values);
+   })
+   .style("stroke", function(d) {
+     return color(d.name);
+   })
+</script>
+		 						</td>
+		 					</t>
+		 				</div>
+		 			</t>
+		 		</t>
+		 	</t>
+		</template>
+		<template id="report_soil_compaction_document_advance">
+			<t t-call="web.html_container">
+				<t t-call="web.html_container">
+					<t t-call="web.internal_layout">
+						<div class="page" style="font-size:20px !important;">
+							<link rel="stylesheet" type="text/css" href="/web/static/lib/nvd3/nv.d3.css"/>
+             				<script src="https://d3js.org/d3.v3.min.js"></script>
+							<t t-if="docs">
+		 						<td class="header">
+							 		<h4 class='text-center'>REPORT FOR SOIL COMPACTION TEST </h4>
+							 	 	<h5 class = "text-right" >Date: <t t-esc="docs.campact_test_date" /></h5>
+							 	 	<h5 class = "text-right" >Lab No. : <t t-esc="docs.name" /></h5>
+		       						<div width="100%">
+								 		<table class="float-left " style="width:100% !important;">
+								 	 		<thead>
+								 	 			<tr>
+					                               <td><strong>Name of  Project :</strong></td>
+					                               <td><strong t-esc="docs.project_id.name" /></td>
+			                           			</tr>
+			                           		</thead>
+			                           	</table>
+									</div>
+			                       	<div width= "100%">
+			                        	<table class="float-left " style="width:50% !important;">
+			                            	<thead>
+			                             		<tr>
+			                               			<td>Location:</td>
+			                               			<td class='text-left' t-esc="docs.location_id.name" />
+			                           			</tr>
+					                           <tr>
+					                               <td><span>Contractor:</span></td>
+					                               <td><span t-esc="docs.contractor.name" /></td>
+					                           </tr>
+					                            <tr>
+					                               <td><span>Kind of Material:</span></td>
+					                               <td><span t-esc="docs.kind_of_material.name" /></td>
+					                           </tr>
+					                            <tr>
+					                               <td>Source :</td>
+					                               <td><span t-esc="docs.original_source"/></td>
+					                           </tr>
+					                            <tr>
+					                               <td>Date Tested:</td>
+					                               <td t-esc="docs.tested_date" />
+					                            </tr>
+			                           		</thead>
+			                      	 	</table>
+				                       <table class="float-left " style="width:50% !important;">
+				                            <thead>
+					                            <tr>
+					                             	<td><span>Sampled By: </span></td>
+					                               	<td><span t-esc="docs.sampled_by.name" /></td>
+					                           </tr>
+					                           <tr>
+					                               <td><span>Submitted_by:</span></td>
+					                               <td><span t-esc="docs.submitted_by.name" /></td>
+					                           </tr>
+					                            <tr>
+					                               <td>Date Submitted:</td>
+					                               <td><span t-esc="docs.date_submit"/></td>
+					                           </tr>
+					                           <tr>
+					                             	<td>Tested By :</td>
+					                             	<td t-esc="docs.tested_by.name" />
+					                           </tr>
+					                           <tr>
+					                               <td> Spec's Item No :</td>
+		                               			   <td t-esc="docs.spec_item_no"/>
+		                         				</tr>
+				                           	</thead>
+				                		</table>
+                   					</div>
+		 							<div width="100%">
+		 	 							<h4 class="text-center"> MOISTURE CONTENT, %</h4> 
+										<table class="table" style="width:100% !important;">
+											<tbody>
+												<tr class="highlight overlap">
+													<td class="text-left">Determination No.</td>
+													<t t-foreach="docs_line" t-as="order">
+														<td>
+															<span>
+																<t t-esc="order['determination_no']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Moisture Can No.</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="order['moisture_can_no']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Wt. of Can + Wet of Soil, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="order['wt_of_can_wetsoil']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Wt. of Can + Dry Soil,   gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+														 <td>
+															<span>
+																<t t-esc="order['wt_of_can_drysoil']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Weight of Water, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="order['wt_of_water']"  t-options='{"widget": "float", "precision": 2}' />
+															</span>
+														</td>
+													</t>
+												</tr>
+											    <tr>
+													<td class="text-left" >Wt. of Can, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+														 <td>
+															<span>
+																<t t-esc="order['wt_of_can']" />
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Wt. of Dry Soil, gms.</td>
+													<t t-foreach="docs_line" t-as="order">
+														 <td>
+															<span>
+																<t t-esc="order['wt_of_drysoil']"   t-options='{"widget": "float", "precision": 2}'/>
+															</span>
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="text-left" >Moisture content  %</td>
+													<t t-foreach="docs_line" t-as="order">
+												 		<td>
+															<span>
+																<t t-esc="(order['moisture_content'])"  t-options='{"widget": "float", "precision": 2}' />
+															</span>
+														</td>
+													</t>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								 	<hr></hr>
+								 	<h4 class="text-center">DENSITY</h4>	
+									<table class="table table-condensed">
+										<tbody>
+											<tr class="highlight overlap">
+												<td class="text-left">Determination No.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['determination_no']" />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wt. of Mold + Soil, gms.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													 <td>
+														<span>
+															<t t-esc="order['wt_of_mold_soil']" />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wt. of Mold, gms.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['wt_of_mold']" />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wt. of Compacted Soil, gms.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['wt_of_compactsoil']" t-options='{"widget": "float", "precision": 2}' />
+														</span>
+													</td>
+												</t>
+											</tr>
+											<tr>
+												<td class="text-left" >Wet Density, gm/cc.</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['wet_density']"  t-options='{"widget": "float", "precision": 3}'/>
+														</span>
+													</td>
+												</t>
+											</tr>
+										    <tr>
+												<td class="text-left" >Dry density,  gm/cc</td>
+												<t t-foreach="docs_lines" t-as="order">
+													<td>
+														<span>
+															<t t-esc="order['dry_density']" t-options='{"widget": "float", "precision": 3}'/>
+														</span>
+													</td>
+												</t>
+											</tr>
+										</tbody>
+									</table>
+									<hr></hr>
+		 							<br/>
+								 	<div width="100%">
+								 		<table class="table float-left" style="width:50% !important;">
+				                            <tr>
+				                            	<td><span>AASHTO: </span> </td>
+				                           	 	<td><span t-esc="docs.aashto" /></td>
+				                            </tr>
+				                            <tr>
+					                            <td><span>Weight of Rammer </span> </td>
+					                            <td><span t-esc="docs.weight_of_rammer" /></td>
+				                           </tr>
+				                            <tr>
+					                            <td><span>No. of Layers </span> </td>
+					                            <td><span t-esc="docs.no_of_layer" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Blows/Layer </span> </td>
+					                            <td><span t-esc="docs.blow_of_layer" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Weight of mold, gm. </span> </td>
+					                            <td><span t-esc="docs.weight_of_mold" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Volume of mold, cc </span> </td>
+					                            <td><span t-esc="docs.volume_of_mold" /></td>
+				                            </tr>
+				                             <tr>
+					                            <td><span>Maximum Dry Density, gm/cc: </span>
+					                            <strong>MDD</strong> </td>
+					                            <td><span t-esc="docs.max_dry_density" /></td>
+				                            </tr>
+				                            <tr>
+					                            <td><span>Optimum Moisture content,%</span>
+					                            <strong>OMC</strong></td>
+					                            <td> <span t-esc="docs.optimum_moisture_content  " /></td>
+				                            </tr>
+								 	</table>
+		 	 						<div  style="width:50%; display:inline-block;float:right;" >
+			 	 						<t t-if="len(graph)>=1">
+				                        	<table class="table float-right" style="width:100%!important; display:inline-block;">
+				                            	<div id="progress" style="display:none"><t t-esc="graph" /></div>
+				                             	<div  class="svg-wrapper" id="line_graph" style="width:100%;height:400px;display: inline-block;border: 1px solid;margin-top: 1%;" > 
+	                    	                		<h5 style="text-align: center;margin-top:3%;margin-bottom: 10%;">Maximum Dry Density=<t t-esc="docs.max_dry_density"  t-options='{"widget": "float", "precision": 3}'/> </h5>
+	                    	                 		<svg id="line_graph_svg" width="390" height="300"/>
+	                                          	</div>
+				                          	</table> 
+				                          </t>
+				                          <t t-else="" >
+			                          		<table class="table float-right" style="width:100%!important; display:inline-block;">
+			                           			<div  class="svg-wrapper" id="line_graph" style="width:100%;height:400px;display: inline-block;border: 1px solid;margin-top: 1%;" >
+			                           			<h3 style="text-align: center; margin-top:35%; "> No Data Available </h3> 
+			                           			</div>
+			                           		</table>
+			                          </t>
+			                     	</div>
+		 	                  	</div>
+				 	           
+                           
+ <style>	                            
+       svg {
+		    overflow: hidden;
+		    vertical-align: middle;
+		    display: block;
+		    margin: auto;
+		}  
+		 .chart_legend{
+			width: 80%;
+		    display: inline-block;
+		    margin-left: 10%;
+		    margin-right: 10%;
+		}      
+		#line_graph path { 
+		    stroke-width: 2;
+		    fill: none;
+		    stroke-linejoin: round;
+		    stroke-linecap: round;
+		}
+		#line_graph circle { 
+		  stroke-width: 2;
+		  fill: rgb(1,16,47)
+		}
+		#line_graph .axis path,
+		#line_graph .axis line {
+		  fill: none;
+		  stroke: rgba(128,135,150, 0.6);
+		  stroke-width: 1;
+		  shape-rendering: crispEdges;
+		}
+		
+		#line_graph .axis text {
+		  fill: #999;
+		  font-size: .8rem;
+		}
+</style>
+  
+<script  type="text/javascript">
+   
+// Draw a line chart
+var svg = d3.select('svg'),
+  margin =  {top: 40, right: 20, bottom: 80, left: 60};
+  width = +svg.attr('width') - margin.left - margin.right,
+  height = +svg.attr('height') - margin.top - margin.bottom,
+  g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+var div = d3.select(".svg-wrapper").append("div").attr("class", "toolTip");
+
+// Set the X scale
+var x = d3.scale.linear().range([0, width]);
+
+// Set the Y scale
+var y = d3.scale.linear().range([height, 0]);
+
+// Set the color scale
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+.scale(x)
+
+var yAxis = d3.svg.axis()
+.scale(y)
+.orient("left");
+
+var line = d3.svg.line()
+.interpolate("cardinal")
+.x(function(d) {
+  return x(d.label);
+})
+.y(function(d) {
+  return y(d.attackType);
+});
+  
+// load the data
+var data = JSON.parse((document.getElementById("progress").innerHTML).replace(/'/g, '"'))
+ 
+// Select the important columns
+color.domain(d3.keys(data[0]).filter(function(key) {
+     return key !== "labels";
+}));
+// Correct the types
+data.forEach(function(d) {
+  d.label =(d.labels);
+});
+var attackTypes = color.domain().map(function(name) {
+  return {
+    name: name,
+    values: data.map(function(d) {
+      return {
+        label: d.label,
+        attackType: +d[name]
+      };
+    })
+  };
+});
+// Set the X domain
+x.domain(d3.extent(data, function(d) {
+  return d.label;
+}));
+// Set the Y domain
+  y.domain([
+    d3.min(attackTypes, function(c) {
+      return d3.min(c.values, function(v) {
+        return v.attackType;
+      });
+    }),
+    d3.max(attackTypes, function(c) {
+      return d3.max(c.values, function(v) {
+        return v.attackType;
+      });
+    })
+  ]);
+  
+// Set the X axis
+g.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis);
+  
+// Set the Y axis
+g.append("g")
+  .attr("class", "y axis")
+  .call(yAxis)
+
+
+// text label for the x axis
+g.append("text")             
+    .attr("transform",
+          "translate(" + (width/2) + " ," + 
+                         (height + margin.top + 20) + ")")
+    .style("text-anchor", "middle")
+    .text(data[0].xaxis);
+    
+ g.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("DRY DENSITY (g/cc)");  
+
+ // Draw the lines
+ var attacker = g.selectAll(".attacker")
+   .data(attackTypes)
+   .enter().append("g")
+   .attr("class", "attacker");
+
+ attacker.append("path")
+   .attr("class", "line")
+   .attr("d", function(d) {
+     return line(d.values);
+   })
+   .style("stroke", function(d) {
+     return color(d.name);
+   })
+</script>
+		 						</td>
+		 					</t>
+		 				</div>
+		 			</t>
+		 		</t>
+		 	</t>
+		</template>
+	</data>
+</odoo>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="report_soil_abrasion_document">
+			<t t-call="web.html_container">
+				<t t-call="web.html_container">
+					<t t-call="web.internal_layout">
+						<div class="page" style="font-size:20px !important;">
+						 	<td class="header" >
+						 		<t t-if="docs">
+									 <h5 class = "text-right" >Date: <t t-esc="docs.abrasion_test_date" /></h5>
+								 	 <h5 class = "text-right" >Lab No. : <t t-esc="docs.name" /></h5>
+								 	 <h4 class='text-center'> REPORT FOR SOIL ABRASION TEST </h4>
+									 	<div width="100%">
+				 							<div width= "100%">
+				                            	<table class="float-left " style="width:50% !important;">
+				                            		<thead>
+				                             			<tr>
+							                            	<td><strong>Project :</strong></td>
+							                            	<td><strong t-esc="docs.project_id.name" /></td>
+							                            </tr>
+							                            <tr>
+								                            <td><span>Location: </span> </td>
+								                            <td><span t-esc="docs.location_id.name" /></td>
+							                           	</tr>
+							                           	<tr>
+							                            	<td><span>Contractor:</span></td>
+							                             	<td><span t-esc="docs.contractor.name" /></td>
+							                             </tr>
+							                             <tr>
+								                         	<td><span>Kind of Material:</span></td>
+								                         	<td><span t-esc="docs.kind_of_material.name" /></td>
+								                         </tr>
+							                             <tr>
+							                             	<td>Source :</td>
+							                             	<td><span t-esc="docs.original_source"/></td>
+							                             </tr>
+						                             </thead>
+				                                  </table>
+						                       <table class="float-left " style="width:50% !important;">
+						                            <thead>
+							                        	<tr>
+						                                	<td><span>Sampled ID: </span></td>
+						                                	<td><span t-esc="docs.sample_identify" /></td>
+					                                	</tr>
+							                            <tr>
+							                             	<td><span>Sampled By: </span></td>
+							                               	<td><span t-esc="docs.sampled_by.name" /></td>
+						                                </tr>
+							                           	<tr>
+							                                <td><span>Submitted_by:</span></td>
+							                                <td><span t-esc="docs.submitted_by.name" /></td>
+							                            </tr>
+							                            <tr>
+							                               <td>Date Submitted:</td>
+							                               <td><span t-esc="docs.date_submit"/></td>
+						                               </tr>
+							                           <tr>
+							                               <td><span>Tested_by:</span></td>
+							                               <td><span t-esc="docs.tested_by.name" /></td>
+							                           </tr>
+						                           </thead>
+					                           </table>
+				            				 </div>
+			        				       </div>
+										   <table class="table table-condensed">
+												<thead>
+													<tr class="highlight overlap">
+														<th >Passing</th>
+														<th>Retained</th>
+														<th>Weight</th>
+													</tr>
+												</thead>
+												<tbody class="orders">
+													<t t-foreach="docs_line" t-as="order">
+														<tr>
+															<td>
+																<span>
+																	<t t-esc="order['passing']" />
+																</span>
+															</td>
+															<td> 
+																<span>
+																	<t t-esc="order['retained']" />
+																</span>
+															</td>
+															<td>
+																<span>
+																	<t t-esc="order['weight']" />
+																</span>
+															</td>
+														</tr>
+													</t>
+								                </tbody>
+							                 </table>
+							                 <hr></hr>
+											 <h5 class = "text-right">Total: <t t-esc='docs.total' /></h5>
+											 <div width="100%">
+											 	 <table class="float-left "  style="width:50% !important;border: 1px solid black;"> 
+					                          		<tr style= "border: 1px solid black;">
+						                               <td><h5><strong><br/>Tested By:</strong></h5> <br/>
+						                               		<span style="margin-left:15%;"><t t-esc="docs.tested_by.name" /><br/></span>
+						                               </td>
+						                            </tr>
+						                            <tr>
+						                               <td> <h5><strong><br/>Checked By: </strong></h5> <br/> 
+						                               		<span style="margin-left:15%;"><t t-esc="docs.checked_by.name"/></span><br/>
+						                               </td>
+					                                </tr> 
+					                             </table>
+					                             <table class="float-left"  style="width:50% !important;border: 1px solid black;" >  
+					                             	<tr style= "border: 1px solid black;">
+							                           <td><h5><strong><br/> Witnessed By: </strong></h5><br/>
+							                           		<span style="margin-left:20%;"><t t-esc="docs.witnessed_by.name"/><br/></span>
+							                           </td>
+							                         </tr>
+							                         <tr> 
+							                           <td><h5> <strong> <br/>Attested By : </strong></h5> <br/>
+							                           		<span style="margin-left:20%;"><t t-esc="docs.attested_by.name"/><br/> </span>
+							                           </td>
+					                                </tr>
+					                            </table> 
+			                    	</div>
+						  		</t>
+						 	</td>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+		<template id="report_soil_abrasion_document_advance">
+			<t t-call="web.html_container">
+				<t t-call="web.html_container">
+					<t t-call="web.internal_layout">
+						<div class="page"  style="font-size:20px !important;">
+						 	<td class="header" >
+						 		<t t-if="docs">
+									 <h6 class = "text-right" >Date: <t t-esc="docs.abrasion_test_date" /></h6>
+								 	 <h6 class = "text-right" >Lab No. : <t t-esc="docs.name" /></h6>
+								 	 <h4 class='text-center'> REPORT FOR SOIL ABRASION TEST </h4>
+									 	<div width="100%">
+				 							<div width= "100%">
+				                            	<table class="float-left " style="width:50% !important;">
+				                            		<thead>
+				                             			<tr>
+							                            	<td><strong>Project :</strong></td>
+							                            	<td><strong t-esc="docs.project_id.name" /></td>
+							                            </tr>
+							                            <tr>
+								                            <td><span>Location: </span> </td>
+								                            <td><span t-esc="docs.location_id.name" /></td>
+							                           	</tr>
+							                           	<tr>
+							                            	<td><span>Contractor:</span></td>
+							                             	<td><span t-esc="docs.contractor.name" /></td>
+							                             </tr>
+							                             <tr>
+								                         	<td><span>Kind of Material:</span></td>
+								                         	<td><span t-esc="docs.kind_of_material.name" /></td>
+								                         </tr>
+							                             <tr>
+							                             	<td>Source :</td>
+							                             	<td><span t-esc="docs.original_source"/></td>
+							                             </tr>
+						                             </thead>
+				                                  </table>
+						                       <table class="float-left " style="width:50% !important;">
+						                            <thead>
+							                        	<tr>
+						                                	<td><span>Sampled ID: </span></td>
+						                                	<td><span t-esc="docs.sample_identify" /></td>
+					                                	</tr>
+							                            <tr>
+							                             	<td><span>Sampled By: </span></td>
+							                               	<td><span t-esc="docs.sampled_by.name" /></td>
+						                                </tr>
+							                           	<tr>
+							                                <td><span>Submitted_by:</span></td>
+							                                <td><span t-esc="docs.submitted_by.name" /></td>
+							                            </tr>
+							                            <tr>
+							                               <td>Date Submitted:</td>
+							                               <td><span t-esc="docs.date_submit"/></td>
+						                               </tr>
+							                           <tr>
+							                               <td><span>Tested_by:</span></td>
+							                               <td><span t-esc="docs.tested_by.name" /></td>
+							                           </tr>
+						                           </thead>
+					                           </table>
+				            				 </div>
+			        				       </div>
+										   <table class="table table-condensed">
+												<thead>
+													<tr class="highlight overlap">
+														<th >Passing</th>
+														<th>Retained</th>
+														<th>Weight</th>
+													</tr>
+												</thead>
+												<tbody class="orders">
+													<t t-foreach="docs_line" t-as="order">
+														<tr>
+															<td>
+																<span>
+																	<t t-esc="order['passing']" />
+																</span>
+															</td>
+															<td> 
+																<span>
+																	<t t-esc="order['retained']" />
+																</span>
+															</td>
+															<td>
+																<span>
+																	<t t-esc="order['weight']" />
+																</span>
+															</td>
+														</tr>
+													</t>
+								                </tbody>
+							                 </table>
+							                 <hr></hr>
+											 <h5 class = "text-right">Total: <t t-esc='docs.total' /></h5>
+						  		</t>
+						 	</td>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+		
+	</data>
+</odoo>
+							
+					
+							

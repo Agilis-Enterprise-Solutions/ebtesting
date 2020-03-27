@@ -1,0 +1,20 @@
+ .tbl_header{
+    float: left;
+    width: 100%;
+    padding-right: 10px;
+    z-index: 1;
+    position: relative;
+    border: none;
+    margin-bottom: 1px;
+}
+.tbl_header thead {
+  border: none !important;
+}
+.tbl_header thead  tr  th{
+  text-align: center !important;
+  min-height: 24px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 2px solid #dee2e6;
+  
+}

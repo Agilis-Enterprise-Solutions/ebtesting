@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Soil Abrasion Tree View -->
+		<record id="soil_abrasion_view_tree" model="ir.ui.view">
+			<field name="name">skit.soil.abrasion.tree</field>
+			<field name="model">skit.soil.abrasion</field>
+			<field name="arch" type="xml">
+				<tree string="Soil Abrasion">
+					<field name="name"/>
+					<field name="abrasion_test_date"></field>
+				    <field name="project_id"></field>
+				    <field name="location_id"></field>
+				    <field name="sample_identify"></field>
+				    <field name="kind_of_material"></field>
+				</tree>
+			</field>
+		</record>
+		
+			<!-- Soil Abrasion Form View -->
+		<record id="soil_abrasion_view_form" model="ir.ui.view">
+				<field name="name">skit.soil.abrasion.form</field>
+				<field name="model">skit.soil.abrasion</field>
+				<field name="arch" type="xml">
+					<form string="Soil Abrasion">
+						<header>
+					       	<button name="ab_action_submit" string="Submit" class="oe_highlight" states="draft"
+					       			type="object" attrs="{'invisible': ['|','|',('abrasion_line_ids','=',[]),
+					       										('state','not in',['draft'])]}"/>
+					       	<button name ="ab_action_confirm" string="Confirm" class="oe_highlight" states="submit" type="object"/>
+					        <button name ="ab_action_verify" string="Verify" class="oe_highlight" states="confirm" type="object"/>
+					        <button name="ab_action_approve" string="Approve" class="oe_highlight" states="verify" type="object"/>
+					        <button name ="ab_action_cancel" states="draft,submit,confirm,verify" string="Cancel"  type="object"/>
+					        <button name="ab_action_draft" states="cancelled" type="object" string="Reset" class="oe_highlight"/>
+					        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,verify,approved" 
+					           	statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"/>
+					    </header>
+						<sheet>
+							<h3>SOIL ABRASION TEST </h3>
+			              	<div class="oe_title">
+								<group>
+										<h2>
+							            	<field name="name" readonly="1"/>
+							            </h2>
+							            <group>
+							            <field name="abrasion_test_date" readonly="1"/>
+						            </group>
+					            </group>
+			       			</div>
+			       			<group>
+		              	 		<field name="project_id" string="Project Name" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+		              	 	</group>
+				            <group>
+				            	<group>
+				            	    <field name="task_id"  invisible="1"/>
+				            		<field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sample_identify" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="qty_rep" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				            		<field name="supplied_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="sampled_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				            		<field name="submitted_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				           		</group>
+				           		<group>
+				                     <field name="contractor" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                     <field name="original_source"  attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="supplied_at" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="spec_item_no" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
+				                     <field name="proposed_use" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+				                     <field name="designation_sampled" />
+				                     <field name="designation_submitted" />
+				                     <field name="date_performed" />
+				                     <field name="date_submit" />
+		                      </group>
+				            </group>
+				            <notebook>
+				            	<!-- ABRASION TABLE -->
+				            	<page string="ABRASION TABLE">
+				            		<group name="abrasion_line">
+				            			<field name="abrasion_line_ids" nolabel="1">
+				            				<tree string="Abrasion Table" create="false" editable = "true">
+				            					<field name="passing" readonly="1"/>
+				            					<field name="retained" readonly="1"/>
+				            					<field name="weight"/>
+				            				</tree>
+				            			</field>
+				            			<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+			                                <div class="oe_inline o_td_label">
+			                                    <label for="total" />
+			                                </div>
+                                			<field name="total" nolabel="1" readonly="1"/>
+                            			</group>
+				            		</group>
+				            	</page>
+				            	
+				            	<!-- Test Summary Tab -->
+				            	<page string="TEST SUMMARY">
+				            		<group colspan="4">
+				            			<group>
+				            				<field name="grading_use" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            			<field name="no_of_sphere"  readonly="1"/>
+					            			<field name="dry_wt_retained" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            			<field name="dry_wt_passing" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            			<field name="abrasion_loss" readonly="1"/>
+				            			</group>
+				            		</group>
+				            	</page>
+				            	<!-- Other info Tab -->
+				            	<page string="OTHER INFO">
+					            	<group>
+					            		<group>
+					            			<field name="tested_by"/>
+					            			<field name="checked_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="tested_date"/>
+					            			<field name="checked_date" />
+					            		</group>
+				            			<group>
+					            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_by"/>
+					            		</group>
+					            		<group>
+					            			<field name="witnessed_date" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+					            			<field name="attested_date"/>
+					            		</group>
+				            		</group>
+				            	</page>
+				            </notebook>
+				         </sheet>
+					</form>
+				</field>
+			</record>
+			<!-- Soil Abrasion Test Action -->
+    		<record id="skit_soil_abrasion_action" model="ir.actions.act_window">
+		        <field name="name">Soil Abrasion Test</field>
+		        <field name="res_model">skit.soil.abrasion</field>
+		        <field name="view_type">form</field>
+		        <field name="view_mode">tree,form</field>
+		        <field name="help" type="html">
+		        	<p class="o_view_nocontent_smiling_face">
+                		Create Soil Abrasion Test
+                	</p>
+                </field>
+    		</record>
+    		
+    		<!-- Soil Abrasion Test Menu -->
+		     <menuitem id="skit_soil_abrasion_menu" name="Soil Abrasion Test"
+		     	parent="skit_main_soil_menu" sequence="6" action="skit_soil_abrasion_action"/>
+	</data>
+</odoo>
