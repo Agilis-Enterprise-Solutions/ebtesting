@@ -107,7 +107,7 @@ class skitprojectwizard(models.Model):
                                     else :
                                         project.update({'project_id': order.project_id.id})
             project_stage_id = self.env['project.task.type'].search([('name','=','Laboratory')])
-            
+            template = ""
             for value in values.lab_no:
                 aggregate = self.env['skit.soil.aggregate'].search([('name','=',value.name)])
                 if aggregate :
@@ -134,7 +134,7 @@ class skitprojectwizard(models.Model):
                         task = self.env['project.task'].create({
                                             'id':self.id,
                                             'project_id':order.project_id.id or project_id.id,
-                                            'name' : name.name,
+                                            'name' : name.name +'-' + template,
                                             'stage_id':project_stage_id.id,
                                             'template_name':template
                                         })

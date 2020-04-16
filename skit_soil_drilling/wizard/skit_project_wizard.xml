@@ -53,7 +53,7 @@
 		                    name="action_view_focus"
 		                    icon="fa-tasks"
 		                    type="object">
-		                  <field name="focus_template" widget="statinfo" string="Template"/>
+		                  <field name="focus_template" widget="statinfo" string="WORKSHEET"/>
                      </button>
 	            </button>
 	 			<xpath expr="//field[@name='project_id']" position="before">
