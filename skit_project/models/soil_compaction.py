@@ -13,7 +13,7 @@ class SoilCompaction(models.Model):
     campact_test_date = fields.Date("Date")
     project_id = fields.Many2one('project.project', "Project Name")
     location_id = fields.Many2one('skit.location')
-    contractor = fields.Many2one('res.users', string="Contractor")
+    contractor = fields.Many2one('res.partner',string="Contrator",domain="[('is_company','=',True)]")
     sample_identify = fields.Char(string="Sample Identification")
     kind_of_material = fields.Many2one('config.material',
                                        string='Kind of Material')
@@ -55,13 +55,15 @@ class SoilCompaction(models.Model):
     tested_date = fields.Datetime("Tested Date", readonly=True, copy=False)
     checked_by = fields.Many2one('res.users', "Checked By", readonly=True)
     checked_date = fields.Datetime("Checked Date", readonly=True, copy=False)
-    witnessed_by = fields.Many2one('res.users', "Witnessed By")
+    witnessed_by = fields.Many2many('res.partner',string="Witnessed By",domain="[('is_company','=',False)]")
     witnessed_date = fields.Datetime("Witnessed Date")
     attested_by = fields.Many2one('res.users', "Attested By", readonly=True)
     attested_date = fields.Datetime("Attested Date", readonly=True, copy=False)
     task_id = fields.Integer("Task", compute='_compute_task_id')
     compaction_parabolic_graph = fields.Text(string="GRAPH",
                                              compute='_compaction_graph')
+    grade_check = fields.Boolean("check")
+    grade = fields.Many2one("config.abrasion",String="Grade")
     
     
     @api.onchange('kind_of_material')
@@ -69,6 +71,16 @@ class SoilCompaction(models.Model):
         for material in self:
             kind_of_material = material.kind_of_material
             material.update({ 'spec_item_no' : kind_of_material.spec_item_no.name})
+            grade = kind_of_material.grading
+            if grade :
+                material.update({'grade_check' :True})
+            else :
+                material.update({'grade_check':False})
+        return {
+                    'domain':{
+                    'grade':[(('id', 'in', grade.ids))],
+               },}      
+    
 
 
     @api.one

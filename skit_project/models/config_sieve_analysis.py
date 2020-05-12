@@ -13,7 +13,7 @@ class SkitSoilAggregateSpecification(models.Model):
     sieve_size = fields.Char(string="Size")
     max_value_range = fields.Char(string="Max Value Range")
     min_value_range = fields.Char(string="Min Value Range")
-    name = fields.Char(string="Spec's Item No.")
+    name = fields.Char(string="Spec's Item No.",readonly=True)
     liquid_limit = fields.Char(string="Liquid Limit")
     plasticity_index = fields.Char(string="Plasticity Index")
     abrasion = fields.Char(string="Abrasion")
@@ -32,6 +32,27 @@ class SkitSoilAggregateSpecification(models.Model):
                         'domain':{
                             'grading':[(('id', 'in', grading.ids))],
                     },}  
+    @api.model
+    def create(self, vals):
+        kind_of_material = vals.get('kind_of_material')
+        if (vals.get('kind_of_material')):
+            grading = self.env['config.material'].search([
+                    ('id', '=', kind_of_material)],limit=1)
+            name = grading.spec_item_no.name
+            vals['name']=name
+            result = super(SkitSoilAggregateSpecification, self).create(vals)
+        return result
+    
+    @api.multi
+    def write(self, vals):
+        kind_of_material = vals.get('kind_of_material')
+        if (vals.get('kind_of_material')):
+            grading = self.env['config.material'].search([
+                    ('id', '=', kind_of_material)],limit=1)
+            name = grading.spec_item_no.name
+            vals['name']=name
+            result = super(SkitSoilAggregateSpecification, self).write(vals)
+        return result
 
   
 class SkitSoilCoarseAggregate(models.Model):
@@ -50,7 +71,13 @@ class SkitSoilCoarseAggregate(models.Model):
     
     @api.onchange('name')
     def onchange_kind_of_material(self):
-        for material in self:
-            kind_of_material = material.name
-            material.update({ 'spec_item_no' : kind_of_material.spec_item_no.id})
+        if self.kind_of_material :
+            for material in self:
+                kind_of_material = material.kind_of_material
+                grading = kind_of_material.grading
+                material.update({ 'name' : kind_of_material.spec_item_no.name})
+                return{
+                        'domain':{
+                            'grading':[(('id', 'in', grading.ids))],
+                    },}
     
