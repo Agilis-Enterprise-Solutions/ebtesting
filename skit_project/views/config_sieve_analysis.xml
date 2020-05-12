@@ -32,8 +32,8 @@
 	        			<group>
 	        				<group>
 				        		<field name="kind_of_material"/>
-				        		<field name="name"/>
-								<field name="grading"/>
+				        		<field name="name" />
+								<field name="grading" widget="selection"/>
 								</group>
 								<group>
 							    <field name="sieve_size"/>

@@ -18,7 +18,7 @@ class SoilPenetration(models.Model):
     supplied_by = fields.Many2one('res.users', "Supplied By")
     sampled_by = fields.Many2one('res.users', "Sampled By")
     submitted_by = fields.Many2one('res.users', "Submitted By")
-    contractor = fields.Many2one('res.users', string="Contractor")
+    contractor = fields.Many2one('res.partner',string="Contrator",domain="[('is_company','=',True)]")
     original_source = fields.Char(string="Original Source")
     supplied_at = fields.Char(string="Supplied At")
     spec_item_no = fields.Char(string="Spec's Item No.")
@@ -41,7 +41,7 @@ class SoilPenetration(models.Model):
     tested_date = fields.Datetime("Tested Date", readonly=True, copy=False)
     checked_by = fields.Many2one('res.users', "Checked By", readonly=True)
     checked_date = fields.Datetime("Checked Date", readonly=True, copy=False)
-    witnessed_by = fields.Many2one('res.users', "Witnessed By")
+    witnessed_by = fields.Many2many('res.partner',string="Witnessed By",domain="[('is_company','=',False)]")
     witnessed_date = fields.Datetime("Witnessed Date")
     attested_by = fields.Many2one('res.users', "Attested By", readonly=True)
     attested_date = fields.Datetime("Attested Date", readonly=True, copy=False)
@@ -122,6 +122,8 @@ class SoilPenetration(models.Model):
     cbr_99_per = fields.Float(string="CBR VALUE % @ 99")
     swell = fields.Float(string="Swell(%)", digits=(12, 3))
     penetration_line_graph = fields.Text(compute='_penetration_line_graph')
+    grade_check = fields.Boolean("check")
+    grade = fields.Many2one("config.abrasion",String="Grade")
 
     @api.model
     def default_material(self):
@@ -140,7 +142,16 @@ class SoilPenetration(models.Model):
         for material in self:
             kind_of_material = material.kind_of_material
             material.update({ 'spec_item_no' : kind_of_material.spec_item_no.name})
-
+            grade = kind_of_material.grading
+            if grade :
+                material.update({'grade_check' :True})
+            else :
+                material.update({'grade_check' :False})
+        return {
+                    'domain':{
+                    'grade':[(('id', 'in', grade.ids))],
+               },}      
+    
     @api.one
     def _penetration_line_graph(self):
         self.penetration_line_graph = json.dumps(self.get_line_graph_datas())
@@ -192,7 +203,7 @@ class SoilPenetration(models.Model):
         if len(datas) >= 1:
             ymaxval = max(datas, key=lambda x: x['value'])
             yminval = min(datas, key=lambda x: x['value'])
-            ymin = yminval.get('value')
+            ymin = yminval.get('value') - 0.1
             ymax = ymaxval.get('value') + 1
 
             xmaxval = max(datas, key=lambda x: x['labels'])
@@ -529,11 +540,11 @@ class SkitPenetrationLineBlow10(models.Model):
     def compute_load(self):
         for penetration in self:
             penet = penetration.penetration
-            if penet == 2.50 or penet == 5.00:
-                tlr = penetration.load_tlr
-                if tlr:
-                    load = (tlr*0.1321)
-                    penetration.update({'load_load': load})
+#             if penet == 2.50 or penet == 5.00:
+            tlr = penetration.load_tlr
+            if tlr:
+                load = (tlr*3.031)
+                penetration.update({'load_load': load})
 
     # Calculate CBR - auto-computed as
     # (Load/Standard)*100
@@ -567,11 +578,11 @@ class SkitPenetrationLineBlow30(models.Model):
     def compute_load(self):
         for penetration in self:
             penet = penetration.penetration
-            if penet == 2.50 or penet == 5.00:
-                tlr = penetration.load_tlr
-                if tlr:
-                    load = (tlr*0.1321)
-                    penetration.update({'load_load': load})
+#             if penet == 2.50 or penet == 5.00:
+            tlr = penetration.load_tlr
+            if tlr:
+                load = (tlr*3.031)
+                penetration.update({'load_load': load})
 
     # Calculate CBR - auto-computed as
     # (Load/Standard)*100
@@ -605,11 +616,11 @@ class SkitPenetrationLineBlow65(models.Model):
     def compute_load(self):
         for penetration in self:
             penet = penetration.penetration
-            if penet == 2.50 or penet == 5.00:
-                tlr = penetration.load_tlr
-                if tlr:
-                    load = (tlr*0.1321)
-                    penetration.update({'load_load': load})
+#             if penet == 2.50 or penet == 5.00:
+            tlr = penetration.load_tlr
+            if tlr:
+                load = (tlr*3.031)
+                penetration.update({'load_load': load})
     # Calculate CBR - auto-computed as
     # (Load/Standard)*100
     # Eg: (62.75/70.63)*100=86

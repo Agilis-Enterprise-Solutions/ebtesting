@@ -56,6 +56,8 @@
 			                    <field name="location_id" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
 			                    <field name="sample_identify" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
 			                	<field name="kind_of_material" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" widget='selection'/>
+			                	<field name="grade" attrs="{'invisible':[('grade_check','!=',True)]}" widget="selection"/>
+			                	<field name="grade_check" invisible="1"/>
 			                    <field name="qty_rep" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
 			                    <field name="supplied_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
 			                    <field name="sample_by" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}" required="1"/>
@@ -109,7 +111,7 @@
 				            			<field name="checked_date" />
 				            		</group>
 			            			<group>
-				            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}"/>
+				            			<field name="witnessed_by" attrs="{'required': [('state', 'in', ('submit'))]}" widget="many2many_tags"/>
 				            			<field name="attested_by"/>
 				            		</group>
 				            		<group>

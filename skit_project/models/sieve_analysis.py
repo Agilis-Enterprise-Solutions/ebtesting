@@ -12,7 +12,7 @@ class SieveAnalysis(models.Model):
     sievetest_date = fields.Date(string="Date", readonly=True)
     project_id = fields.Many2one('project.project', "Project Name")
     location_id = fields.Many2one('skit.location', String="Location")
-    contractor = fields.Many2one('res.users', string="Contractor")
+    contractor = fields.Many2one('res.partner',string="Contrator",domain="[('is_company','=',True)]")
     sample_identify = fields.Char(string="Sample Identification",
                                   default="Not Stated")
 #     kind_of_material = fields.Many2one('config.material' ,string = 'Kind of Material')
@@ -49,7 +49,7 @@ class SieveAnalysis(models.Model):
     moisture_content = fields.Float(string="Moisture Content",
                                     compute='compute_moisture_content')
     tested_by = fields.Many2one('res.users', "Tested By", readonly=True)
-    witnessed_by = fields.Many2one('res.users', "Witnessed By")
+    witnessed_by = fields.Many2many('res.partner',string="Witnessed By",domain="[('is_company','=',False)]")
     checked_by = fields.Many2one('res.users', "Checked By", readonly=True)
     checked_date = fields.Datetime("Checked Date", readonly=True, copy=False)
     attested_by = fields.Many2one('res.users', "Attested By", readonly=True)
@@ -58,6 +58,8 @@ class SieveAnalysis(models.Model):
     witnessed_date = fields.Datetime("Witnessed Date")
     attested_date = fields.Datetime("Attested Date", readonly=True, copy=False)
     task_id = fields.Integer("Task" ,compute='_compute_task_id')
+    grade_check = fields.Boolean("check")
+    grade = fields.Many2one("config.abrasion",String="Grade")
     
 #     @api.onchange('spec_item_no')
 #     def onchange_spec_item_no(self):
@@ -96,6 +98,16 @@ class SieveAnalysis(models.Model):
         for material in self:
             kind_of_material = material.kind_of_material
             material.update({ 'spec_item_no' : kind_of_material.spec_item_no.name})
+            grade = kind_of_material.grading
+            if grade :
+                material.update({'grade_check' :True})
+            else :
+                material.update({'grade_check':False})
+        return {
+                    'domain':{
+                    'grade':[(('id', 'in', grade.ids))],
+               },}      
+    
             
     # Submit Button Action
     @api.multi
@@ -239,7 +251,7 @@ class SieveAnalysis(models.Model):
     def write(self, values):
         item_no = values.get('spec_item_no')
         kind_of_material = self.env['config.material'].search([('spec_item_no','=',item_no)])
-        material = self.env['config.material'].search([('name','=',kind_of_material.name)])
+        material = self.env['config.material'].search([('name','=',kind_of_material.name)],limit=1)
         material_id = self.env['skit.soil.aggregate.specification'].search([('kind_of_material','=',material.id)],limit=1)
         if (values.get('sample_by')):
             res_user = self.env['res.users'].search([

@@ -18,7 +18,7 @@ class SoilAbrasion(models.Model):
     supplied_by = fields.Many2one('res.users', "Supplied By")
     sampled_by = fields.Many2one('res.users', "Sampled By")
     submitted_by = fields.Many2one('res.users', "Submitted By")
-    contractor = fields.Many2one('res.users', string="Contractor")
+    contractor = fields.Many2one('res.partner',string="Contrator",domain="[('is_company','=',True)]")
     original_source = fields.Char(string="Original Source")
     supplied_at = fields.Char(string="Supplied At")
     spec_item_no = fields.Char(string="Spec's Item No.")
@@ -42,7 +42,7 @@ class SoilAbrasion(models.Model):
     tested_date = fields.Datetime("Tested Date", readonly=True, copy=False)
     checked_by = fields.Many2one('res.users', "Checked By", readonly=True)
     checked_date = fields.Datetime("Checked Date", readonly=True, copy=False)
-    witnessed_by = fields.Many2one('res.users', "Witnessed By")
+    witnessed_by = fields.Many2many('res.partner',string="Witnessed By",domain="[('is_company','=',False)]")
     witnessed_date = fields.Datetime("Witnessed Date")
     attested_by = fields.Many2one('res.users', "Attested By", readonly=True)
     attested_date = fields.Datetime("Attested Date", readonly=True, copy=False)
@@ -56,6 +56,8 @@ class SoilAbrasion(models.Model):
                                         "Abrasion")
     total = fields.Float("Total", compute="compute_total_val")
     task_id = fields.Integer("Task" ,compute='compute_task_id')
+    grade_check = fields.Boolean("check")
+    grade = fields.Many2one("config.abrasion",String="Grade")
     
     @api.model
     def default_material(self):
@@ -71,7 +73,15 @@ class SoilAbrasion(models.Model):
         for material in self:
             kind_of_material = material.kind_of_material
             material.update({ 'spec_item_no' : kind_of_material.spec_item_no.name})
-
+            grade = kind_of_material.grading
+            if grade :
+                material.update({'grade_check' :True})
+            else:
+                material.update({'grade_check' :False})
+        return {
+                    'domain':{
+                    'grade':[(('id', 'in', grade.ids))],
+               },}      
     
     #To set corresponding 'Task id'
     @api.depends('name')
