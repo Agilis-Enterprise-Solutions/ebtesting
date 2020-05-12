@@ -12,7 +12,8 @@ class SoilAggregate(models.Model):
     date_labtest = fields.Date(string="Date", readonly=True)
     project_id = fields.Many2one('project.project', "Project Name")
     location_id = fields.Many2one('skit.location', String="Location")
-    contractor = fields.Many2one('res.users', string="Contractor")
+#     contractor = fields.Many2one('res.users', string="Contractor")
+    contractor = fields.Many2one('res.partner',string="Contrator",domain="[('is_company','=',True)]")
     sample_identify = fields.Char(string="Sample Identification",
                                   default="Not Stated")
     kind_of_material = fields.Many2one('config.material' ,string = 'Kind of Material')
@@ -28,6 +29,8 @@ class SoilAggregate(models.Model):
                                           readonly=True)
     designation_submitted = fields.Many2one('res.partner', "Designation",
                                           readonly=True)
+    grade_check = fields.Boolean("check")
+    grade = fields.Many2one("config.abrasion",String="Grade")
     date_performed = fields.Datetime(string="Date", readonly=True)
     date_submit = fields.Datetime(string="Date", readonly=True)
     submitted_by = fields.Many2one('res.users', string="Submitted By")
@@ -41,7 +44,8 @@ class SoilAggregate(models.Model):
     soil_penetration = fields.Char(string="Soil Penetration"  ,compute='compute_penetration_no')
     remarks = fields.Text(string="Remarks")
     tested_by = fields.Many2one('res.users', "Tested By", readonly=True)
-    witnessed_by = fields.Many2one('res.users', "Witnessed By")
+#     witnessed_by = fields.Many2one('res.users', "Witnessed By")
+    witnessed_by = fields.Many2many('res.partner',string="Witnessed By",domain="[('is_company','=',False)]")
     checked_by = fields.Many2one('res.users', "Checked By", readonly=True)
     checked_date = fields.Datetime("Checked Date", readonly=True, copy=False)
     attested_by = fields.Many2one('res.users', "Attested By", readonly=True)
@@ -73,6 +77,15 @@ class SoilAggregate(models.Model):
         for material in self:
             kind_of_material = material.kind_of_material
             material.update({ 'spec_item_no' : kind_of_material.spec_item_no.name})
+            grade = kind_of_material.grading
+            if grade :
+                material.update({'grade_check' :True})
+            else :
+                material.update({'grade_check':False})
+        return {
+                    'domain':{
+                    'grade':[(('id', 'in', grade.ids))],
+               },}      
     
     # Submit Button Action
     @api.multi
