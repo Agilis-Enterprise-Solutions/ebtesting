@@ -129,7 +129,7 @@ class skitprojectwizard(models.Model):
                     template = "Soil Penetration Test"
                 
                 for name in value:
-                    tasks = self.env['project.task'].search([('name','=',name.name)])
+                    tasks = self.env['project.task'].search([('name','=',name.name+'-'+template)])
                     if not  tasks :
                         task = self.env['project.task'].create({
                                             'id':self.id,
