@@ -98,25 +98,73 @@ class SoilCompaction(models.Model):
         xmax = [0]
         ymin = 0
         ymax = 0
+        vertical=[]
+        horizontal=[]
+        xaxis=[]
+        yaxis=[]
         for liquid in self.liquid_limit_ids:
-            datas.append({"value": round(liquid.moisture_content, 2),
+            datas.append({"value": round(liquid.moisture_content,2),
                           "labels": [liquid.no_of_blow, "No.of Blows"],
                           "yaxis": "Percent Moisture",
                           "no_of_blow": liquid.no_of_blow})
+            vertical.append({"value":round(liquid.moisture_content, 1)})
+            horizontal.append({"valuess":liquid.no_of_blow})
+            xaxis.append(round(liquid.moisture_content, 2))
+            yaxis.append(liquid.no_of_blow)
+            
+        liquid_limit=0
+        
+        if len(xaxis) >=3 and len(yaxis) >=3:
+            x1=xaxis[0]
+            x2=xaxis[1]
+            x3=xaxis[2]
+            y1= yaxis[0]
+            y2=yaxis[1]
+            y3=yaxis[2]
+           
+           
+            
+            if  y1 <= self.plastic_limit <= y2 or y1 >= self.plastic_limit >= y2:
+                if y1==y2 or x1==x2:
+                    liquid_limit=0
+                else:
+                    straight_y =self.plastic_limit
+                    m=round((y2-y1)/(x2-x1),5)
+                    b=round((y1-m*x1),3)
+                    liquid_limit= round(((straight_y-b)/m),2)
+                    
+            elif y2 <= self.plastic_limit <= y3 or y2 >= self.plastic_limit >= y3:
+                if y2==y3 or x2==x3:
+                    liquid_limit=0
+                else:
+                    straight_y =self.plastic_limit
+                    m=round((y3-y2)/(x3-x2),5)
+                    b=round((y2-m*x2),3)
+                    liquid_limit= round(((straight_y-b)/m),2)
+    
+              
+        self.write({'liquid_limit':round(liquid_limit,1)})    
+            
         if len(datas) >= 1:
             ymaxval = max(datas, key=lambda x: x['value'])
             yminval = min(datas, key=lambda x: x['value'])
-            ymin = yminval.get('value')
+            ymin = yminval.get('value') - 1
             ymax = ymaxval.get('value') + 1
 
             xmaxval = max(datas, key=lambda x: x['labels'])
             xminval = min(datas, key=lambda x: x['labels'])
             xmin = xminval.get('labels')
             xmax = xmaxval.get('labels')
+            
+       
         return [{'values': sorted(datas, key=lambda k: k['no_of_blow']),
-                 'y_val': [ymin, ymax],
-                 'x_val': [xmin[0], xmax[0]+1],
-                 'title': "",
+                'y_val': [ymin, ymax],
+                'vertical':vertical,
+                'v1_value':self.plastic_limit,
+                'horizontal':horizontal,
+                'h1_value':liquid_limit,
+                'x_val': [xmin[0], xmax[0]+1],
+                'title': "",
                  'id': self.id}]
 
     @api.depends('name')

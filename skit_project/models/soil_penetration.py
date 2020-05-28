@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from odoo import api, fields, models,_
 from datetime import datetime, date
+from odoo.exceptions import UserError
 import json
 
 
@@ -159,6 +160,8 @@ class SoilPenetration(models.Model):
     @api.multi
     def get_line_graph_datas(self):
         datas = []
+        vertical=[]
+        horizontal=[]
         xmin = [0]
         xmax = [0]
         ymin = 0
@@ -180,6 +183,8 @@ class SoilPenetration(models.Model):
             datas.append({"value": round(self.dry_density_10, 1),
                           "labels": [b10_max_value, xlabel],
                           "yaxis": "Dry Density(g/cc)"})
+            horizontal.append({"valuess":b10_max_value})
+            vertical.append({"value": round(self.dry_density_10, 1)})
 
         # Get Max value of CBR in Blow30
         b30_max_value = 0
@@ -190,7 +195,8 @@ class SoilPenetration(models.Model):
             datas.append({"value": round(self.dry_density_30, 1),
                           "labels": [b30_max_value, xlabel],
                           "yaxis": "Dry Density(g/cc)"})
-
+            horizontal.append({"valuess":b30_max_value})
+            vertical.append({"value": round(self.dry_density_30, 1)})
         # Get Max value of CBR in Blow65
         b65_max_value = 0
         if self.penetration_line_blow65_ids:
@@ -200,6 +206,10 @@ class SoilPenetration(models.Model):
             datas.append({"value": round(self.dry_density_65, 1),
                           "labels": [b65_max_value, xlabel],
                           "yaxis": "Dry Density(g/cc)"})
+            horizontal.append({"valuess":b65_max_value})
+            vertical.append({"value": round(self.dry_density_65, 1)})
+            
+            
         if len(datas) >= 1:
             ymaxval = max(datas, key=lambda x: x['value'])
             yminval = min(datas, key=lambda x: x['value'])
@@ -210,11 +220,89 @@ class SoilPenetration(models.Model):
             xminval = min(datas, key=lambda x: x['labels'])
             xmin = xminval.get('labels')
             xmax = xmaxval.get('labels')
-        return [{'values': datas,
+        mdd=self.mdd
+        mdd2 = round((mdd *0.95),1)
+        density_10 = round(self.dry_density_10,1)
+        density_30 = round(self.dry_density_30,1)
+        density_65 = round(self.dry_density_65,1)
+        x3=0
+        x4=0
+        
+        if density_10 <= mdd <= density_30 or density_10 >= mdd >= density_30:
+           
+            x1=b10_max_value
+            y1=density_10
+            x2=b30_max_value
+            y2 =density_30
+            if y1==y2 or x1==x2:
+                x3=0
+            else:
+                straight_y =mdd
+                m=round((y2-y1)/(x2-x1),5)
+                b=round((y1-m*x1),3)
+                x3= (straight_y-b)/m
+            
+        elif  density_30 <= mdd <= density_65 or density_30 >= mdd >= density_65:
+            x1=b30_max_value
+            y1=density_30
+            x2=b65_max_value
+            y2 =density_65
+            if y1==y2 or x1==x2:
+                x3=0
+            else:
+                straight_y =mdd
+                m=round((y2-y1)/(x2-x1),5)
+                b=round((y1-m*x1),3)
+                x3= (straight_y-b)/m
+            
+        
+        if density_10 <=  mdd2 <= density_30 or density_10 >=  mdd2 >= density_30:
+            x1=b10_max_value
+            y1=density_10
+            x2=b30_max_value
+            y2 =density_30
+            if y1==y2 or x1==x2:
+                x4=0
+            else:
+                straight_y =mdd2
+                m=round((y2-y1)/(x2-x1),5)
+                b=round((y1-m*x1),3)
+                x4= (straight_y-b)/m
+           
+         
+        elif  density_30 <= mdd2 <= density_65 or density_30 >= mdd2 >= density_65:
+            x1=b30_max_value
+            y1=density_30
+            x2=b65_max_value
+            y2 =density_65
+            if y1==y2 or x1==x2:
+                x4=0
+            else:
+                straight_y =mdd2
+                m=round((y2-y1)/(x2-x1),5)
+                b=round((y1-m*x1),3)
+                x4= (straight_y-b)/m
+        
+       
+       
+        self.write({'cbr_100_per':round(x3,2),
+                      'cbr_99_per':round(x4,2),})
+        
+        
+       
+        
+        return [{'values':datas,
+                 'horizontal':horizontal,
+                 'v1_value':x3 ,
+                 'v2_value':x4 ,
+                 'vertical':vertical,
+                 'h1_value': mdd,
+                 'h2_value':mdd2,
                  'y_val': [ymin, ymax],
                  'x_val': [xmin[0], xmax[0]+1],
                  'title': "MDD ="+str(self.mdd)+" OMC ="+str(self.omc)+" %",
                  'id': self.id}]
+        
 
     # Calculate Weight of Soil - auto-computed as
     # (Weight of Cylinder + Soil) - (Weight of Cylinder)
