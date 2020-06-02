@@ -104,27 +104,60 @@ var KanbanParabolicGraphWidget = AbstractField.extend({
 	            var identity = function (p) {return p;};
 	            var tickValues = [];
 	            var tickFormat; 
-	        	for (var i = 0; i < data[0]['values'].length; i++) {
-	        		 if (data[0]['values'][i].labels[0] !== tickLabel) {
-	                     tickLabel = data[0]['values'][i].labels[0];
-	                     tickValues.push(tick);
-	                     tickLabels.push(tickLabel);
-	                     tick++;
-	                 }
-	        		 label = data[0]['values'][i].labels[1];
-	                 if (!data_dict[label]) {
-	                      data_dict[label] = {
-	                          values: [],
-	                          key: label,
-	                      };
-	                  }
-	                  data_dict[label].values.push({
-	                      x: data[0]['values'][i].labels[0], y: data[0]['values'][i].value,
-	                  });
-	                  line_data = _.map(data_dict, identity);
-	        	 }
-	             data = line_data;
-	        	 return data;
+	            var  values=[], horizontal=[], horizontal2=[],  vertical=[], vertical2=[];
+	 	       
+		        if (data[0]['values'].length>=1){
+		            label = data[0]['values'][0].labels[1];
+		           
+		        	for (var i = 0; i < data[0]['values'].length; i++) {
+		        		values.push({
+		                      x: data[0]['values'][i].labels[0], y: data[0]['values'][i].value,
+		                  });
+		        	 }
+		        }
+		        if ((data[0]['horizontal'])&& (data[0]['h1_value'])){
+		        	for (var i = 0; i < data[0]['horizontal'].length; i++) {
+		                    horizontal.push({  x:data[0]['horizontal'][i].valuess, y:data[0]['h1_value'] });
+		        	 }
+		        	}	 
+		        if ((data[0]['vertical'])&&(data[0]['v1_value'])){
+		        	for (var i = 0; i < data[0]['vertical'].length; i++) {
+		                  vertical.push({
+		                      x:data[0]['v1_value'] ,y:data[0]['vertical'][i].value
+		                  });
+		        	 }
+		        	}
+		        if (vertical && horizontal )
+		        	{
+		        return  [
+       		     {
+       		        values: values,
+       		        key: label,
+       		        color: '#7777ff',
+       		      },
+       		    {
+       		        values: vertical,      //values - represents the array of {x,y} data points
+       		        key: 'V1', //key  - the name of the series.
+       		        color:'#F08080', //color - optional: choose your own line color.
+       		      },
+       		      {
+       		        values: horizontal,
+       		        key: 'H1',
+       		        color: '#F08080',
+       		      },
+       		    ];
+		        	}
+		        
+		        else
+		        	{
+		        	 return  [
+		       		     {
+		       		        values: values,
+		       		        key: label,
+		       		        color: '#7777ff',
+		       		      },];
+		        	}
+		        	
 	        }
     },
 });
@@ -250,14 +283,14 @@ var KanbanLineGraphWidget = AbstractField.extend({
 	                  });
 	        	}
 	        	 }
-	        	if ((data[0]['horizontal'])&&(data[0]['v1_value'])){
+	        	if ((data[0]['vertical'])&&(data[0]['v1_value'])){
 	        	for (var i = 0; i < data[0]['vertical'].length; i++) {
 	                  vertical.push({
 	                      x:data[0]['v1_value'] ,y:data[0]['vertical'][i].value
 	                  });
 	        	 }
 	        	}
-	        	if ((data[0]['horizontal'])&&(data[0]['v2_value'])){
+	        	if ((data[0]['vertical'])&&(data[0]['v2_value'])){
 	        	for (var i = 0; i < data[0]['vertical'].length; i++) {
 	        		vertical2.push({
 	                      x:data[0]['v2_value'] ,y:data[0]['vertical'][i].value

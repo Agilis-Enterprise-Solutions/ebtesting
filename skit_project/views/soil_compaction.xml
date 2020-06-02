@@ -82,8 +82,8 @@
 					            	<field name="blow_of_layer" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
 					            	<field name="weight_of_mold" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
 					            	<field name="volume_of_mold" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
-					            	<field name="max_dry_density" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
-					            	<field name="optimum_moisture_content" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="max_dry_density" />
+					            	<field name="optimum_moisture_content" />
 				            	</group> 
 				            	<group>
 				            		<t t-name="ProjectBodyBarGraph">

@@ -36,8 +36,8 @@ class SoilCompaction(models.Model):
     blow_of_layer = fields.Integer("Blows / Layers")
     weight_of_mold = fields.Float("Weight of Mold  gm")
     volume_of_mold = fields.Float("Volume of Mold  cc")
-    max_dry_density = fields.Float("Maximum Dry Density gm/cc")
-    optimum_moisture_content = fields.Float("Optimum Moisture Content %")
+    max_dry_density = fields.Float("Maximum Dry Density gm/cc",readonly=True)
+    optimum_moisture_content = fields.Float("Optimum Moisture Content %",readonly=True)
     state = fields.Selection([('draft', 'Draft'),
                               ('submit', 'Submit'),
                               ('confirm', 'Confirm'),
@@ -95,6 +95,12 @@ class SoilCompaction(models.Model):
         xmax = [0]
         ymin = 0
         ymax = 0
+        vertical=[]
+        horizontal=[]
+        vertical1=[]
+        value=[]
+        v1_value=0
+        h1_value=0
         if self.optimum_moisture_content:
             omc = "="+str(self.optimum_moisture_content)
         else:
@@ -113,19 +119,58 @@ class SoilCompaction(models.Model):
                                   "yaxis": "Dry Density(g/cc)",
                                   "moisture": moisture['value']
                                   })
+                    vertical.append({'value': density.dry_density})
+                    horizontal.append({'valuess':moisture['value']})
+                    value.append({"value": density.dry_density,
+                                  "labels": moisture['value'],
+                        })
+                    vertical1.append(density.dry_density)
         if len(datas) >= 1:
             ymaxval = max(datas, key=lambda x: x['value'])
             yminval = min(datas, key=lambda x: x['value'])
             ymin = yminval.get('value')
             ymax = ymaxval.get('value') + 1
-
             xmaxval = max(datas, key=lambda x: x['labels'])
             xmax = xmaxval.get('labels')
+            
+            
+
+        
+        if len(vertical1) >=2:
+            vertical1.sort(reverse=True)
+            value1 =vertical1[0]
+            value2 = vertical1[1]
+            h1_value =(value1+value2)/1.98
+            
+            if value1 > h1_value :
+                 h1_value =value1
+                
+            v1=[]
+            i=0
+            for x in value:
+                if x['value'] == value1:
+                    v1.append(x['labels'])
+                    i+=1
+                elif x['value']== value2:
+                    v1.append(x['labels'])
+                    i+=1 
+                      
+            val1=v1[0]
+            val2=v1[1] 
+            v1_value =  (val1 + val2)/1.95
+        dry_density=round((self.max_dry_density),2)
+        self.write({'max_dry_density': h1_value,
+                    'optimum_moisture_content':v1_value})
         return [{'values': sorted(datas, key=lambda k: k['moisture']),
                  'y_val': [ymin, ymax],
                  'x_val': [0, xmax[0]+1],
-                 'title':"Maximum Dry Density = "+str(self.max_dry_density),
-                'id': self.id}]
+                 'title':"Maximum Dry Density = "+str(dry_density),
+                'id': self.id,
+                'vertical':vertical,
+                'v1_value':v1_value,
+                'horizontal':horizontal,
+                'h1_value':h1_value,
+                }]
 
     # Submit Button Action
     @api.multi

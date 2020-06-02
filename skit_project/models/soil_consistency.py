@@ -37,7 +37,7 @@ class SoilCompaction(models.Model):
                               ('cancelled', 'Cancelled')], string='Status',
                              readonly=True, copy=False, index=True,
                              track_visibility='onchange', default='draft')
-    liquid_limit = fields.Float('Liquid Limit (LL)')
+    liquid_limit = fields.Float('Liquid Limit (LL)',readonly=True)
     plastic_limit = fields.Float('Plastic Limit (PL)', default=25)
     plasticity_index = fields.Float('Plasticity Index (PI)',
                                     compute="compute_plasticity_index")
@@ -121,9 +121,6 @@ class SoilCompaction(models.Model):
             y1= yaxis[0]
             y2=yaxis[1]
             y3=yaxis[2]
-           
-           
-            
             if  y1 <= self.plastic_limit <= y2 or y1 >= self.plastic_limit >= y2:
                 if y1==y2 or x1==x2:
                     liquid_limit=0

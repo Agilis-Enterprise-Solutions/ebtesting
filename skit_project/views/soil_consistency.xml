@@ -77,7 +77,7 @@
 				            </group>
 				            <group>
 				            	<group>
-					            	<field name="liquid_limit" attrs="{'readonly': [('state', 'in', ('approved','cancelled'))]}"/>
+					            	<field name="liquid_limit" />
 					            	<field name="plastic_limit" readonly ="1"/>
 					            	<field name="plasticity_index" readonly="1"/>
 				            	</group>
