@@ -102,7 +102,7 @@ class SoilCompaction(models.Model):
         v1_value=0
         h1_value=0
         if self.optimum_moisture_content:
-            omc = "="+str(self.optimum_moisture_content)
+            omc = "="+str(round(self.optimum_moisture_content,2))
         else:
             omc = ""
         for moisture in self.moisture_content_ids:
@@ -146,14 +146,14 @@ class SoilCompaction(models.Model):
                  h1_value =value1
                 
             v1=[]
-            i=0
+           
             for x in value:
                 if x['value'] == value1:
                     v1.append(x['labels'])
-                    i+=1
+                   
                 elif x['value']== value2:
                     v1.append(x['labels'])
-                    i+=1 
+                    
                       
             val1=v1[0]
             val2=v1[1] 
@@ -161,6 +161,11 @@ class SoilCompaction(models.Model):
         dry_density=round((self.max_dry_density),2)
         self.write({'max_dry_density': h1_value,
                     'optimum_moisture_content':v1_value})
+#         print(datas)
+#         print(v1_value)
+#         print(horizontal)
+#         print(h1_value)
+#         print(vertical)
         return [{'values': sorted(datas, key=lambda k: k['moisture']),
                  'y_val': [ymin, ymax],
                  'x_val': [0, xmax[0]+1],
